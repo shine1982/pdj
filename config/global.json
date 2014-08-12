@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "_default": {
+            "link": "pdj"
+        }, 
+        "pdj": {
+            "applicationId": "kpvRHkolfZ7SZyVB7rm5khyvZaaitOxjYNPWvSME", 
+            "masterKey": "8w67jdwXLffDndEFDWpHmfY5SNbduswKM4b9UJig"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.19"
+    }
+}
