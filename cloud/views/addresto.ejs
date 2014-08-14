@@ -1,0 +1,28 @@
+<h3>Ajouter un restaurant</h3>
+
+<form role="form" action="/submitResto" method="post" id="addRestoForm">
+    <div class="form-group upload">
+    </div>
+    <div class="form-group">
+        <label for="restoName">Nom restaurant</label>
+        <input type="text" class="form-control" id="restoName" name="restoName" placeholder="Enter le nom d'un restaurant">
+    </div>
+    <div class="form-group">
+        <label for="pdjImage">Une image</label>
+        <input type="file" id="pdjImage" name="pdjImage">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+<% if(restos.length >0){ %>
+<hr/>
+
+<h3>Les 10 derniers restaurants ajoutés</h3>
+
+<table class="table table-hover">
+    <thead><tr><td>Nom</td></tr></thead>
+   <% _(restos).each(function(resto){%>
+    <tr><td><%=resto.get("name")%></td></tr>
+    <%})%>
+</table>
+<%}%>
+
