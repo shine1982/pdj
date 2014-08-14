@@ -1,4 +1,4 @@
-var Uploader = Backbone.View.extend({
+Uploader = Backbone.View.extend({
   events: {
     "submit": "upload",
     "change input[type=file]": "upload"
@@ -28,17 +28,20 @@ var Uploader = Backbone.View.extend({
           //console.log(parseFile.url());
         // Then, we post to our custom endpoint which will do the post
         // processing necessary for the image page
+          this.$(".upload").hide();
+          console.log("file uploaded to "+parseFile.url());
 
-        $.post("/i", {
-          file: {
-            "__type": "File",
-            "url": parseFile.url(),
-            "name": parseFile.name()
-          },
-          title: self.$("[name=title]").val()
-        }, function(data) {
-          window.location.href = "/i/" + data.id;
-        });
+              $.post("/r", {
+                  file: {
+                      "__type": "File",
+                      "url": parseFile.url(),
+                      "name": parseFile.name()
+                  },
+                  restoName:$("#restoName").val()
+              }, function(data) {
+                  window.location.href = "/addresto";
+              });
+
       },function(err){console.log(err);});
     } else {
       alert("Please select a file");

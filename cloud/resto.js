@@ -23,18 +23,23 @@ module.exports = function(){
 
     });
 
-    app.post('/submitResto', function(req, res) {
-        var restoName = req.body.restoName;
-        var Restaurant = Parse.Object.extend("Restaurant");
-        var resto = new Restaurant();
-        resto.set("name",restoName);
-        resto.save().then(function(resto) {
-            // the object was saved successfully.
-            console.log("resto "+restoName+" saved!");
+    app.post('/r', function(req, res) {
+        if (req.body.file) {
+            var Restaurant = Parse.Object.extend("Restaurant");
+            var resto = new Restaurant();
+            resto.set("name",req.body.restoName);
+            resto.set("pdjOriginal",req.body.file);
 
-        }, function(error) {
-            // the save failed.
-        });
+            // Set up the ACL so everyone can read the image
+            // but only the owner can have write access
+            var acl = new Parse.ACL();
+            acl.setPublicReadAccess(true);
+            resto.setACL(acl);
+            // Save the image and return some info about it via json
+            resto.save();
+        } else {
+            res.json({ error: 'No file uploaded!' });
+        }
 
 
         res.redirect('/addresto');
