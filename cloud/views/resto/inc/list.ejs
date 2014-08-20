@@ -4,7 +4,12 @@
     <h3>La liste de restaurants</h3>
 
     <table class="table table-hover">
-        <thead><tr><td>Nom</td></tr></thead>
+        <thead><tr>
+            <td>Nom</td>
+            <td>Adresse</td>
+            <td>Code postal</td>
+            <td>Ville</td>
+        </tr></thead>
         <% _(restos).each(function(resto){%>
         <tr><td><%=resto.get("name")%></td>
             <td><%=resto.get("address")%></td>
