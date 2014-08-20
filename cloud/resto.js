@@ -1,27 +1,31 @@
+
 module.exports = function(){
+
     var express = require('express');
     var app = express();
+    app.set('views', 'cloud/views');  // Specify the folder to find templates
+    app.set('view engine', 'ejs');
+
+
     app.locals._ = require('underscore');
 
     // This is an example of hooking up a request handler with a specific request
     // path and HTTP verb using the Express routing API.
     app.get('/restos', function(req, res) {
-        res.render('restaurants', { message: 'Hello from Feng!' });
-    });
 
-    app.get('/addresto', function(req, res) {
         var query = new Parse.Query("Restaurant");
         query.descending("createdAt");
         query.limit(10);
         query.find().then(function(restos){
-            res.render('addresto',{"restos": restos});
-        },
-        function(error){
-            console.log(error);
-            res.render("addresto",{"msg":error});
-        })
-
+                res.render('restaurants',{"restos": restos});
+            },
+            function(error){
+                console.log(error);
+                res.render("restaurants",{"msg":error});
+            })
     });
+
+
 
     app.post('/r', function(req, res) {
         if (req.body.file) {

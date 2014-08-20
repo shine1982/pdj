@@ -5,7 +5,8 @@
         }, 
         "pdj": {
             "applicationId": "kpvRHkolfZ7SZyVB7rm5khyvZaaitOxjYNPWvSME", 
-            "masterKey": "8w67jdwXLffDndEFDWpHmfY5SNbduswKM4b9UJig"
+            "masterKey": "8w67jdwXLffDndEFDWpHmfY5SNbduswKM4b9UJig",
+            "javascriptKey":"XnADJoi04CRUKowVFfYx5Q3SPI2XT0xn742utjKN"
         }
     }, 
     "global": {
