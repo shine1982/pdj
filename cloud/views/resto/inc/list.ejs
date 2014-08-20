@@ -1,0 +1,17 @@
+<script type="text/template" id="restos-template">
+    <a href="#edit" class="btn btn-primary" id="addResto">Ajouter un restaurant</a>
+    <% if(restos.length >0){ %>
+    <h3>La liste de restaurants</h3>
+
+    <table class="table table-hover">
+        <thead><tr><td>Nom</td></tr></thead>
+        <% _(restos).each(function(resto){%>
+        <tr><td><%=resto.get("name")%></td>
+            <td><%=resto.get("address")%></td>
+            <td><%=resto.get("postalCode")%></td>
+            <td><%=resto.get("city")%></td>
+            <td width="20%"><img src="<%=_.isUndefined(resto.get("pdjSizeSmall"))?'':resto.get("pdjSizeSmall").url() %>" alt="..." class="img-circle"></td></tr>
+        <%})%>
+    </table>
+    <%}%>
+</script>

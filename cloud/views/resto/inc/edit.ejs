@@ -1,0 +1,35 @@
+<script type="text/template" id="addresto-template">
+    <h3>Ajouter un restaurant</h3>
+    <hr/>
+    <form role="form" action="/submitResto" method="post" id="addRestoForm">
+        <div class="form-group upload">
+        </div>
+        <div class="form-group">
+            <label for="name">Nom restaurant</label>
+            <input type="text" class="form-control" name="name">
+        </div>
+        <div class="form-group">
+            <label for="address">Adresse</label>
+            <input type="text" class="form-control" name="address" placeholder="numéro, rue, avenue....">
+        </div>
+        <div class="form-group">
+            <label for="postalCode">Code Postal</label>
+            <input type="text" class="form-control" name="postalCode" placeholder="ex. 75001">
+        </div>
+        <div class="form-group">
+            <label for="city">Ville</label>
+            <input type="text" class="form-control" name="city" placeholder="Paris" value="Paris">
+        </div>
+
+
+        <div class="form-group">
+            <a href="/restos" class="btn btn-default">Annuler</a>
+            <input type="submit" id="submitResto" class="btn btn-primary" value="Soumettre">
+        </div>
+
+    </form>
+    <div class="form-group">
+        <label for="pdjImage">Une image</label>
+        <input type="file" id="pdjImage" name="pdjImage">
+    </div>
+</script>

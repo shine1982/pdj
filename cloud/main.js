@@ -9,7 +9,7 @@ var SMALL_WIDTH = 110;
 Parse.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
-
+/*
 Parse.Cloud.beforeSave("Restaurant", function(req, res) {
 
     if(req.object.get('name').length===0){
@@ -21,16 +21,16 @@ Parse.Cloud.beforeSave("Restaurant", function(req, res) {
         // Resize to a normal "show" page image size
         return resizeImageKey({
             object: req.object,
-            fromKey: "pdjOriginal",
-            toKey: "pdjSizeNormal",
+            fromKey: "pdjOriginalImage",
+            toKey: "pdjNormalImage",
             width: NORMAL_WIDTH
         })
     }).then(function() {
         // Resize to a smaller size for thumbnails
         return resizeImageKey({
             object: req.object,
-            fromKey: "pdjOriginal",
-            toKey: "pdjSizeSmall",
+            fromKey: "pdjOriginalImage",
+            toKey: "pdjSmallImage",
             width: SMALL_WIDTH,
             crop: true
         });
@@ -39,4 +39,5 @@ Parse.Cloud.beforeSave("Restaurant", function(req, res) {
     }, function(error) {
         res.error(error);
     });
-});
+
+});*/

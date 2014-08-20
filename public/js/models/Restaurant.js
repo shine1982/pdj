@@ -1,7 +1,8 @@
 var app = app || {};
 
 app.Restaurant = Parse.Object.extend({
-    className:"Restaurant",
+    className:"Restaurant"
+   /*
     defaults: {
         name: '',
         address: '',
@@ -12,5 +13,5 @@ app.Restaurant = Parse.Object.extend({
         pdjOriginalImage: null,
         pdjNormalImage:null,
         pdjSmallImage: null
-    }
+    }*/
 });

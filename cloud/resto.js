@@ -17,11 +17,11 @@ module.exports = function(){
         query.descending("createdAt");
         query.limit(10);
         query.find().then(function(restos){
-                res.render('restaurants',{"restos": restos});
+                res.render('resto/restaurants',{"restos": restos});
             },
             function(error){
                 console.log(error);
-                res.render("restaurants",{"msg":error});
+                res.render("resto/restaurants",{"msg":error});
             })
     });
 
