@@ -4,7 +4,7 @@ var RestaurantView = Parse.View.extend({
     el:'.page',
 
     // Cache the template function for a single item.
-    template: _.template( $('#addresto-template').html() ),
+    template: _.template($('#addresto-template').html()),
 
     // The DOM events specific to an item.
     events: {
@@ -18,42 +18,53 @@ var RestaurantView = Parse.View.extend({
        // this.listenTo(this.model, 'change', this.render);
     },
 
-    render: function() {
-        this.$el.html( this.template( {} ) );
+    render: function(id) {
+        var that = this;
+        if(id){
+            var query = new Parse.Query(app.Restaurant);
+            query.get(id, {
+                success: function(resto) {
+                    that.$el.html( that.template({resto: resto}) );
+                    that.resto=resto;
+                },
+                error: function(object, error) {
+                   showMsg(3,"Error pour récuperer le resto avec id "+id +" ("+error+")");
+                }
+            });
+        }else{
+            this.$el.html( this.template({resto:false}) );
+        }
+
         return this;
     },
+
+
 
     saveResto: function(e) {
         e.preventDefault();
 
         var data = Backbone.Syphon.serialize(this);
-
-        var resto = new app.Restaurant();
+        var resto;
+        var isModeModify=false;
+        if(this.resto){
+            resto = this.resto;
+            isModeModify=true;
+        }else{
+            resto = new app.Restaurant();
+        }
 
         resto.set(data);
-/*
-        resto.set("address",data.address);
-        resto.set("postalCode",data.postalcode);
-        resto.set("city",data.city);*/
 
         resto.save(null, {
             success: function(resto) {
-                // Execute any logic that should take place after the object is saved.
-             //   alert('New object created with objectId: ' + resto.id);
+               var msgToShow = "Le restaurant '"+ resto.get("name") + (isModeModify?"' a été mis à jour":"' a été ajouté");
+               showMsg(0,msgToShow);
+
             },
             error: function(resto, error) {
-                // Execute any logic that should take place if the save fails.
-                // error is a Parse.Error with an error code and description.
-               // alert('Failed to create new object, with error code: ' + error.message);
+                showMsg(3,error.message);
             }
         });
-
-/*
-        this.model.save().then(
-            function(resto){
-                alert(resto.id + "resto saved!");
-            }
-        );*/
 
     }
 

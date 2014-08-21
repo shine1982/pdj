@@ -8,7 +8,6 @@ module.exports = function(){
 
 
     app.locals._ = require('underscore');
-
     // This is an example of hooking up a request handler with a specific request
     // path and HTTP verb using the Express routing API.
     app.get('/restos', function(req, res) {

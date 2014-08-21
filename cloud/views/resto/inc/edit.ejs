@@ -1,35 +1,37 @@
 <script type="text/template" id="addresto-template">
-    <h3>Ajouter un restaurant</h3>
+    <h3>{{=resto?'Modifier le':'Ajouter un'}} restaurant</h3>
     <hr/>
+    {{if (resto){ }}
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#edit/{{=resto.id}}">Info basique</a></li>
+        <li><a href="#edit/dish/{{=resto.id}}">Plat du jour</a></li>
+    </ul>
+    {{ } }}
     <form role="form" action="/submitResto" method="post" id="addRestoForm">
         <div class="form-group upload">
         </div>
         <div class="form-group">
             <label for="name">Nom restaurant</label>
-            <input type="text" class="form-control" name="name">
+            <input type="text" class="form-control" name="name" value="{{=resto? resto.get('name'):''}}">
         </div>
         <div class="form-group">
             <label for="address">Adresse</label>
-            <input type="text" class="form-control" name="address" placeholder="numéro, rue, avenue....">
+            <input type="text" class="form-control" name="address" value="{{=resto? resto.get('address'):''}}" placeholder="numéro, rue, avenue....">
         </div>
         <div class="form-group">
+            <div class=""></div>
             <label for="postalCode">Code Postal</label>
-            <input type="text" class="form-control" name="postalCode" placeholder="ex. 75001">
+            <input type="text" class="form-control" name="postalCode"  value="{{=resto? resto.get('postalCode'):''}}"  placeholder="ex. 75001">
         </div>
         <div class="form-group">
             <label for="city">Ville</label>
-            <input type="text" class="form-control" name="city" placeholder="Paris" value="Paris">
+            <input type="text" class="form-control" name="city" value="{{=resto? resto.get('city'):'Paris'}}">
         </div>
-
-
         <div class="form-group">
-            <a href="/restos" class="btn btn-default">Annuler</a>
-            <input type="submit" id="submitResto" class="btn btn-primary" value="Soumettre">
+               <a href="/restos" class="btn btn-default">Annuler</a> &nbsp; &nbsp;
+               <input type="submit" id="submitResto" class="btn btn-primary" value="Soumettre">
         </div>
-
     </form>
-    <div class="form-group">
-        <label for="pdjImage">Une image</label>
-        <input type="file" id="pdjImage" name="pdjImage">
-    </div>
+
+
 </script>

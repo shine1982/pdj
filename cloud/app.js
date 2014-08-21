@@ -10,6 +10,7 @@ app.use(expressLayouts);
 app.use(express.bodyParser());    // Middleware for reading request body
 
 app.locals._ = require('underscore');
+
 // Resto endpoints
 app.use('/', require('cloud/resto'));
 

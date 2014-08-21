@@ -1,7 +1,8 @@
 var Router = Backbone.Router.extend({
     routes: {
         '': 'restos',
-        'edit':'editResto'
+        'edit':'editResto',
+        'edit/:id':'editResto'
     }
 }
 )
@@ -11,8 +12,9 @@ router.on('route:restos', function(){
    restaurantsView.render();
 
 });
-router.on('route:editResto', function(){
+router.on('route:editResto', function(id){
+
     var restaurantView = new RestaurantView();
-    restaurantView.render();
+    restaurantView.render(id);
 });
 Backbone.history.start();
