@@ -2,7 +2,8 @@ var Router = Backbone.Router.extend({
     routes: {
         '': 'restos',
         'edit':'editResto',
-        'edit/:id':'editResto'
+        'edit/:id':'editResto',
+        'edit/pdj/:id':'editPlatdujour'
     }
 }
 )
@@ -13,6 +14,11 @@ router.on('route:restos', function(){
 
 });
 router.on('route:editResto', function(id){
+
+    var restaurantView = new RestaurantView();
+    restaurantView.render(id);
+});
+router.on('route:editPlatdujour', function(id){
 
     var restaurantView = new RestaurantView();
     restaurantView.render(id);

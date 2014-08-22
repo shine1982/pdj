@@ -1,0 +1,8 @@
+<h3>{{=resto?'Modifier le':'Ajouter un'}} restaurant</h3>
+<hr/>
+{{if (resto){ }}
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a href="#edit/{{=resto.id}}">Info basique</a></li>
+    <li><a href="#edit/dish/{{=resto.id}}">Plat du jour</a></li>
+</ul>
+{{ } }}
