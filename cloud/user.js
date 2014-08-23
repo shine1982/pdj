@@ -42,7 +42,7 @@ module.exports = function(){
       res.redirect('/');
     }, function(error) {
       // Show the error message and let the user try again
-      res.render('login', { flash: error.message });
+      res.render('user/login', { flash: error.message });
     });
   });
 
