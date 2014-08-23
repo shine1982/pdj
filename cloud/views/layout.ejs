@@ -54,9 +54,22 @@
             <a class="navbar-brand" href="/"> Admin </a>
         </div>
         <div class="collapse navbar-collapse">
+            <% if(Parse.User.current()){%>
             <ul class="nav navbar-nav">
-                <li><a href="/restos">Restaurants</a></li>
+                <li><a href="/a/restos">Restaurants</a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+                <li>
+                    <form class="navbar-form" method="post" action="/logout">
+                        <div clss="form-group">
+                      <button type="submit"><span class="glyphicon glyphicon-off"></span> </button>
+                        </div>
+                </form>
+                 </li>
+
+            </ul>
+            <% } %>
         </div><!--/.nav-collapse -->
     </div>
 </div>

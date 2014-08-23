@@ -1,3 +1,4 @@
+var requireUser = require('cloud/require-user');
 
 module.exports = function(){
 
@@ -10,7 +11,7 @@ module.exports = function(){
     app.locals._ = require('underscore');
     // This is an example of hooking up a request handler with a specific request
     // path and HTTP verb using the Express routing API.
-    app.get('/restos', function(req, res) {
+    app.get('/a/restos', requireUser, function(req, res) {
 
         var query = new Parse.Query("Restaurant");
         query.descending("createdAt");

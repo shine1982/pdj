@@ -8,5 +8,4 @@ function showMsg(level, msg){
             $("#msgPanel").fadeIn();
         }
     );
-
 }

@@ -54,7 +54,7 @@ var RestaurantView = Parse.View.extend({
         }
 
         resto.set(data);
-
+        resto.setACL(new Parse.ACL(Parse.User.current()));
         resto.save(null, {
             success: function(resto) {
                var msgToShow = "Le restaurant '"+ resto.get("name") + (isModeModify?"' a été mis à jour":"' a été ajouté");

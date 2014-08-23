@@ -4,9 +4,13 @@
             "link": "pdj"
         }, 
         "pdj": {
-            "applicationId": "09qsWVn2x6ItvvCuxaDIOmGDoc7aPbAVGLAPOCbZ",
-            "masterKey": "tTlDbssacHkpRnEhLD4hDOJ64Q6IZ8N1eytfCrZB",
-            "javascriptKey":"5UY4Kz0No8G0IP7vke7f6auJKZVESqAJCd7TmNob"
+            "applicationId": "09qsWVn2x6ItvvCuxaDIOmGDoc7aPbAVGLAPOCbZ", 
+            "javascriptKey": "5UY4Kz0No8G0IP7vke7f6auJKZVESqAJCd7TmNob", 
+            "masterKey": "tTlDbssacHkpRnEhLD4hDOJ64Q6IZ8N1eytfCrZB"
+        }, 
+        "pdjProd": {
+            "applicationId": "ZLxMvsT2sDIrF2U2hOGCH9hjTmHbDWWOBerBe4Wm", 
+            "masterKey": "AhUg6Qe9KE6e4gMJ8gl3WDX2eDOkgG1Xv6RoUHwo"
         }
     }, 
     "global": {
