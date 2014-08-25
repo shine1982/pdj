@@ -3,18 +3,19 @@
 module.exports = function(){
   var express = require('express');
   var app = express();
-    app.set('views', 'cloud/views');  // Specify the folder to find templates
-    app.set('view engine', 'ejs');    // Set the template engine
+
+  app.set('views', 'cloud/views');  // Specify the folder to find templates
+  app.set('view engine', 'ejs');    // Set the template engine
 
 
     // Renders the signup page
-/*
+
   app.get('/signup', function(req, res) {
-    res.render('signup');
+    res.render('user/signup');
   });
-*/
+
   // Signs up a new user
-/*
+
   app.post('/signup', function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
@@ -27,10 +28,10 @@ module.exports = function(){
       res.redirect('/');
     }, function(error) {
       // Show the error message and let the user try again
-      res.render('signup', { flash: error.message });
+      res.render('user/signup', { flash: error.message });
     });
   });
-*/
+
   // Render the login page
   app.get('/login', function(req, res) {
     res.render('user/login');
