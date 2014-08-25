@@ -9,7 +9,7 @@ module.exports = function(){
 
 
     // Renders the signup page
-
+/*
   app.get('/signup', function(req, res) {
     res.render('user/signup');
   });
@@ -31,7 +31,7 @@ module.exports = function(){
       res.render('user/signup', { flash: error.message });
     });
   });
-
+*/
   // Render the login page
   app.get('/login', function(req, res) {
     res.render('user/login');
