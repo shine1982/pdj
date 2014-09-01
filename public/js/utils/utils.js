@@ -3,7 +3,7 @@ function showMsg(level, msg){
     $("#msgPanel").html(_.template($("#msgPanel").html())({level:msgLevelConstants[level], msg:msg}));
     $('html, body').animate(
         {scrollTop: 0},
-        'slow',
+        'fast',
         function(){
             $("#msgPanel").fadeIn();
         }

@@ -1,0 +1,72 @@
+<script type="text/template" id="menu-template">
+    <br/>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">Entrée</h3>
+        </div>
+        <div class="panel-body">
+            <table id="starter" class="table table-hover">
+                <tr>
+                    <th>Nom d'entrée</th>
+                    <th>prix</th>
+                    <th></th>
+                </tr>
+
+                <tr>
+                    <td><input id="dishName1" value="" class="form-control"/></td>
+                    <td><input id="dishPriceEuro1" value="" size="1"/>,<input size="1" id="dishPriceCentimes1" value="00"/>€ </td>
+                    <td><button class="addDish" value="1">Ajouter</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Plat</h3>
+        </div>
+        <div class="panel-body">
+            <table id="maincourse" class="table table-hover">
+                <tr>
+                    <th>Nom de plat</th>
+                    <th>prix</th>
+                    <th></th>
+                </tr>
+
+                <tr>
+                    <td><input id="dishName2" value="" class="form-control"/></td>
+                    <td><input id="dishPriceEuro2" value="" size="1"/>,<input size="1" id="dishPriceCentimes2" value="00"/>€ </td>
+                    <td><button class="addDish" value="2">Ajouter</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">Dessert</h3>
+        </div>
+        <div class="panel-body">
+            <table id="dessert" class="table table-hover">
+                <tr>
+                    <th>Nom de dessert</th>
+                    <th>prix</th>
+                    <th></th>
+                </tr>
+
+                <tr>
+                    <td><input id="dishName3" value="" class="form-control"/></td>
+                    <td><input id="dishPriceEuro3" value="" size="1"/>,<input size="1" id="dishPriceCentimes3" value="00"/>€ </td>
+                    <td><button class="addDish" value="3">Ajouter</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="dish-template">
+<td>
+    {{=name}}
+</td>
+<td>{{=priceEuro}}.{{=priceCentimes}} €</td>
+<td>
+   <span class="destroy"></span>
+</td>
+</script>

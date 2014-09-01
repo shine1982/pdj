@@ -1,0 +1,59 @@
+body {
+    padding-top: 70px;
+    padding-bottom: 30px;
+}
+table tr .destroy {
+    display: none;
+
+    width: 40px;
+    height: 40px;
+    margin: auto 0;
+    font-size: 22px;
+    color: #a88a8a;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+table tr .destroy:hover {
+    text-shadow: 0 0 1px #000,
+    0 0 10px rgba(199, 107, 107, 0.8);
+    -webkit-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    transform: scale(1.3);
+}
+
+table tr .destroy:after {
+    content: '✖';
+}
+
+table tr:hover .destroy {
+    display: block;
+}
+
+.panel-body .destroy {
+    display: none;
+
+    width: 40px;
+    height: 40px;
+    margin: auto 0;
+    font-size: 22px;
+    color: #a88a8a;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.panel-body .destroy:hover {
+    text-shadow: 0 0 1px #000,
+    0 0 10px rgba(199, 107, 107, 0.8);
+    -webkit-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    transform: scale(1.3);
+}
+
+.panel-body .destroy:after {
+    content: '✖';
+}
+
+.panel-body .photoTbn:hover .destroy {
+    display: block;
+}

@@ -1,0 +1,60 @@
+<script type="text/template" id="photos-template">
+    <br/>
+
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title">Photos du restaurant<div class="pull-right"><a type="href" class="addPhoto" id="addRestoPhoto" data-toggle="modal" data-target="#normalImageModel"><i class="fa fa-plus-square"></i></a></div></h3>
+        </div>
+        <div class="panel-body">
+            <div class="row" id="restoPhotosContainer">
+
+            </div>
+        </div>
+    </div>
+    <!-- modal to add a photo-->
+    <div class="modal fade" id="normalImageModel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Ajouter une photo</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        <input title="Choisir une image" type="file" id="imageUploader"  accept="image/jpeg, image/png">
+                        <i class="fa fa-refresh fa-spin" id="uploadImageSpin" style="display: none"></i>
+                    <div id="originalImage" style="max-width: 600px;">
+                    </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitCroppedPhoto">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- modal to add a photo-->
+    <div class="modal fade" id="showNormalImageModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom:0px">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                </div>
+                <div class="modal-body">
+                    <img src="">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</script>
+<script type="text/template" id="photo-template">
+    <a class="thumbnail">
+        <img data-src="holder.js/100%x180" alt="..." src="{{=thumbnailPhoto.url()}}">
+    </a>
+    <span class="destroy"></span>
+</script>
+
+<script type="text/template" id="image-panel-template">
+        <img id="imageContainer" class="cropper">
+</script>

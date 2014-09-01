@@ -1,4 +1,3 @@
-
 <div id="restaurntsContainer" class="container">
 
     <div class="page">
@@ -6,16 +5,31 @@
 
     </div>
 </div>
+<% include inc/edit-title %>
 <% include inc/edit-resto-info %>
-<script type="text/javascript">
-    new Uploader({ el: "#addRestoForm" });
-
-</script>
+<% include inc/edit-todaydish %>
+<% include inc/edit-menu %>
+<% include inc/edit-photos %>
+<% include inc/edit-contact %>
 <% include inc/list%>
+
+<script src="/js/models/Constant.js"></script>
 <script src="/js/models/Restaurant.js"></script>
+<script src="/js/models/Dish.js"></script>
+<script src="/js/models/Photo.js"></script>
+<script src="/js/models/Contact.js"></script>
 <script src="/js/collections/Restaurants.js"></script>
+<script src="/js/collections/Menu.js"></script>
+<script src="/js/collections/Photos.js"></script>
 <script src="/js/views/RestaurantView.js"></script>
+<script src="/js/views/RestaurantManagementView.js"></script>
 <script src="/js/views/RestaurantsView.js"></script>
+<script src="/js/views/TodayDishManagementView.js"></script>
+<script src="/js/views/MenuView.js"></script>
+<script src="/js/views/DishView.js"></script>
+<script src="/js/views/PhotoView.js"></script>
+<script src="/js/views/PhotosView.js"></script>
+<script src="/js/views/ContactView.js"></script>
 <script src="/js/routers/Router.js"></script>
 
 

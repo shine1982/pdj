@@ -7,6 +7,3 @@ var Restaurants = Parse.Collection.extend({
     model: app.Restaurant
 
 });
-
-
-app.restaurants = new Restaurants();
