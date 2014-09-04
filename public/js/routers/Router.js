@@ -29,10 +29,8 @@ app.router.on('route:editResto', function(id){
 });
 app.router.on('route:editTodayDish', function(id){
 
-    restaurantManagementView.render(id,'basicinfo');
+    restaurantManagementView.render(id,'todaydish');
     var todayDishManangementView = new TodayDishManangementView(id);
-    todayDishManangementView.render();
-
 });
 app.router.on('route:editMenu', function(id){
     restaurantManagementView.render(id,'menu');

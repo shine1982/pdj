@@ -17,7 +17,7 @@
         <% _(restos).each(function(resto){%>
         <tr>
             <td width="20%">
-                <img src="<%=_.isUndefined(resto.get("pdjSizeSmall"))?'':resto.get("pdjSizeSmall").url() %>" alt="no image" class="img-circle">
+                <img src="<%=_.isUndefined(resto.get("platdujour"))?'':resto.get("platdujourUrl") %>" alt="no image" class="img-circle">
             </td>
             <td><%=resto.get("name")%></td>
             <td><%=resto.get("address")%></td>

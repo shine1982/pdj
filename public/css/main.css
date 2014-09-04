@@ -57,3 +57,21 @@ table tr:hover .destroy {
 .panel-body .photoTbn:hover .destroy {
     display: block;
 }
+td .nameedit{
+    display: none;
+}
+td .priceedit{
+    display: none;
+}
+td.editing .nameview{
+    display: none;
+}
+td.editing .nameedit{
+    display: block;
+}
+td.editing .priceview{
+    display: none;
+}
+td.editing .priceedit{
+    display: inline-block;
+}

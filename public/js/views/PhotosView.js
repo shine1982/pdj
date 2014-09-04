@@ -35,9 +35,6 @@ var PhotosView = Parse.View.extend({
                 });
             }
         }
-
-
-
     },
     initPhotos:function(){
         app.resto.photos = new app.Photos();
@@ -85,36 +82,8 @@ var PhotosView = Parse.View.extend({
             reader.onload = function(e)
             {
                 img.src = e.target.result;
-
-                var canvas = document.createElement("canvas");
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0);
-
-                var MAX_WIDTH = 1024;
-                var MAX_HEIGHT = 768;
-                var width = img.width;
-                var height = img.height;
-
-                if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-                }
-                canvas.width = width;
-                canvas.height = height;
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0, width, height);
-                var dataurl = canvas.toDataURL("image/jpeg");
-
                 var name = "image.jpg";
-                var parseFile = new Parse.File(name, {base64: dataurl.substring(23)});
-
+                var parseFile = new Parse.File(name, {base64: getResizedImageBase64Data(img)});
 
                 parseFile.save().then(function() {
                     $("#uploadImageSpin").hide();
@@ -158,6 +127,7 @@ var PhotosView = Parse.View.extend({
 
     render: function() {
         this.$el.html( this.template());
+        $('input[type=file]').bootstrapFileInput();
         return this;
     }
 });
