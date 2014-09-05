@@ -13,6 +13,7 @@ app.use(parseExpressHttpsRedirect());    // Automatically redirect non-secure ur
 app.use(express.bodyParser());    // Middleware for reading request body
 app.use(express.methodOverride());
 app.use(express.cookieParser('SECRET_SIGNING_KEY'));
+/*
 app.use(parseExpressCookieSession({
     fetchUser: true,
     key: 'resto.sess',
@@ -20,7 +21,7 @@ app.use(parseExpressCookieSession({
         maxAge: 3600000 * 24 * 30
     }
 }));
-
+*/
 app.locals._ = require('underscore');
 
 // Resto endpoints
@@ -28,18 +29,10 @@ app.locals._ = require('underscore');
 app.use('/', require('cloud/user'));
 app.use('/', require('cloud/resto'));
 
-
-// // Example reading from the request query string of an HTTP get request.
-// app.get('/test', function(req, res) {
-//   // GET http://example.parseapp.com/test?message=hello
-//   res.send(req.query.message);
-// });
-
-// // Example reading from the request body of an HTTP post request.
-// app.post('/test', function(req, res) {
-//   // POST http://example.parseapp.com/test (with request body "message=hello")
-//   res.send(req.body.message);
-// });
-
 // Attach the Express app to Cloud Code.
-app.listen();
+if (process.env && process.env['DEV']) {
+    app.use(express.static(__dirname + '/../public'));
+    app.listen(3000);
+} else {
+    app.listen();
+}
