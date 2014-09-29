@@ -6,8 +6,11 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,22 +21,39 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.parse.Parse;
+import com.parse.ui.ParseLoginActivity;
+import com.parse.ui.ParseLoginFragment;
+import com.parse.ui.ParseLoginHelpFragment;
+import com.parse.ui.ParseOnLoadingListener;
+import com.parse.ui.ParseOnLoginSuccessListener;
+import com.parse.ui.ParseSignupFragment;
+
 
 public class IndexActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ParseLoginFragment.ParseLoginFragmentListener,
+        ParseLoginHelpFragment.ParseOnLoginHelpSuccessListener,
+        ParseOnLoginSuccessListener, ParseOnLoadingListener {
 
+    public static final String LOG_TAG = "ParseLoginActivity";
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+
+    private static final String ARG_SECTION_NUMBER = "section_number";
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
 
+
+    private Bundle configOptions;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
 
@@ -45,6 +65,7 @@ public class IndexActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
     }
 
     @Override
@@ -52,8 +73,30 @@ public class IndexActivity extends Activity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, getFragmentByPosition(position))
                 .commit();
+    }
+
+    private Fragment getFragmentByPosition(int position){
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, position);
+        Fragment fragment = new PlaceholderFragment();
+        configOptions = getMergedOptions();
+        switch (position){
+            case NavigationDrawerFragment.POSITION_INDEX:
+                // par défault un placeHolder
+                fragment.setArguments(args);
+                break;
+            case NavigationDrawerFragment.POSITION_LOGIN:
+                fragment = ParseLoginFragment.newInstance(configOptions);
+                break;
+            case NavigationDrawerFragment.POSITION_SIGNUP:
+                fragment = ParseSignupFragment.newInstance(configOptions,"","");
+                break;
+        }
+
+
+        return fragment;
     }
 
     public void onSectionAttached(int number) {
@@ -106,6 +149,36 @@ public class IndexActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onSignUpClicked(String username, String password) {
+
+    }
+
+    @Override
+    public void onLoginHelpClicked() {
+
+    }
+
+    @Override
+    public void onLoginSuccess() {
+
+    }
+
+    @Override
+    public void onLoadingStart(boolean showSpinner) {
+
+    }
+
+    @Override
+    public void onLoadingFinish() {
+
+    }
+
+    @Override
+    public void onLoginHelpSuccess() {
+
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -144,6 +217,32 @@ public class IndexActivity extends Activity
             ((IndexActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+    }
+
+    private Bundle getMergedOptions() {
+        // Read activity metadata from AndroidManifest.xml
+        ActivityInfo activityInfo = null;
+        try {
+            activityInfo = getPackageManager().getActivityInfo(
+                    this.getComponentName(), PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            if (Parse.getLogLevel() <= Parse.LOG_LEVEL_ERROR &&
+                    Log.isLoggable(LOG_TAG, Log.WARN)) {
+                Log.w(LOG_TAG, e.getMessage());
+            }
+        }
+
+        // The options specified in the Intent (from ParseLoginBuilder) will
+        // override any duplicate options specified in the activity metadata
+        Bundle mergedOptions = new Bundle();
+        if (activityInfo != null && activityInfo.metaData != null) {
+            mergedOptions.putAll(activityInfo.metaData);
+        }
+        if (getIntent().getExtras() != null) {
+            mergedOptions.putAll(getIntent().getExtras());
+        }
+
+        return mergedOptions;
     }
 
 }

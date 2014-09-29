@@ -40,6 +40,11 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
+    public static final int POSITION_INDEX=0;
+    public static final int POSITION_LOGIN=1;
+    public static final int POSITION_SIGNUP=2;
+    public static final int POSITION_ARDOISE=3;
+
     /**
      * A pointer to the current callbacks instance (the Activity).
      */
@@ -102,6 +107,7 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
+                        getString(R.string.title_section0),
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
