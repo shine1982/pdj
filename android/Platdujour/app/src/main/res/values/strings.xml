@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Platdujour</string>
-    <string name="title_section0">Index</string>
+    <string name="app_name">Plat du jour</string>
+    <string name="title_section0">Accueil</string>
     <string name="title_section1">Login</string>
     <string name="title_section2">Sign up</string>
     <string name="title_section3">Ardoise du jour</string>
@@ -67,5 +67,46 @@
     <string name="com_parse_ui_login_dispatch_user_logged_in">"User logged in, starting: "</string>
     <string name="com_parse_ui_login_dispatch_user_not_logged_in">User not logged in, starting ParseLoginActivity</string>
     <string name="pdj_login_title">Login</string>
+    <string name="desc_list_item_icon">avalue</string>
+    
+    <!-- accueil -->
+    <string name="find_nearest_dishes_of_today">Trouvez votre plat du jour à proximité en appuyant le bouton de geolocalisation</string>
+    <string name="find_dishes_of_today_by_input">Ou par un champs de saisie</string>
+    <string name="the_dishes_of_today_by_nearby">Les plats du jour à coté de vous</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items_client">
+        <item>Accueil</item>
+        <item>Plat du jour</item>
+        <item>Restaurants</item>
+        <item>Mon compte</item>
+        <item> Zone Restaurateur ↓</item>
+    </string-array>
+    <string-array name="nav_drawer_items_restauranteur">
+        <item>Mon ardoise du jour</item>
+        <item>Entrées,plats,desserts de mon restaurant</item>
+        <item>Gérer mes ardoises</item>
+        <item>Mon restaurant</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons_client">
+        <item>@drawable/ic_accueil</item>
+        <item>@drawable/ic_platdujour</item>
+        <item>@drawable/ic_restaurant</item>
+        <item>@drawable/ic_myaccount</item>
+        <item>@drawable/ic_restauranteur</item>
+    </array>
+    <array name="nav_drawer_icons_restaurateur">
+        <item>@drawable/ic_ardoisedujour</item>
+        <item>@drawable/ic_mesentreesplatsdesserts</item>
+        <item>@drawable/ic_gerermesardoises</item>
+        <item>@drawable/ic_infomonrestaurant</item>
+    </array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="geoloc_button_description">geoloc button</string>
+    <string name="search_button_ok">OK</string>
 
 </resources>

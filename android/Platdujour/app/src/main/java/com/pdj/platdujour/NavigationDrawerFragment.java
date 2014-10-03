@@ -4,6 +4,7 @@ package com.pdj.platdujour;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.res.TypedArray;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,9 +19,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.pdj.platdujour.navmenu.adapter.NavDrawerItemViewListAdapter;
+import com.pdj.platdujour.navmenu.model.NavDrawerItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -41,9 +47,9 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     public static final int POSITION_INDEX=0;
-    public static final int POSITION_LOGIN=1;
-    public static final int POSITION_SIGNUP=2;
-    public static final int POSITION_ARDOISE=3;
+    public static final int POSITION_PLATDUJOUR=1;
+    public static final int POSITION_RESTAURANTS=2;
+    public static final int POSITION_MONCOMPTE=3;
 
     /**
      * A pointer to the current callbacks instance (the Activity).
@@ -62,6 +68,14 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+
+    private String[] navMenuTitlesClient;
+    private String[] navMenuTitlesRestauranteur;
+    private TypedArray navMenuIconsClients;
+    private TypedArray navMenuIconsRestaurateur;
+
+    private List<NavDrawerItem> navDrawerItems;
+    private NavDrawerItemViewListAdapter adapter;
 
     public NavigationDrawerFragment() {
     }
@@ -102,6 +116,45 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+
+        // load slide menu items
+        navMenuTitlesClient = getResources().getStringArray(R.array.nav_drawer_items_client);
+        navMenuTitlesRestauranteur = getResources().getStringArray(R.array.nav_drawer_items_restauranteur);
+
+
+        // nav drawer icons from resources
+        navMenuIconsClients = getResources()
+                .obtainTypedArray(R.array.nav_drawer_icons_client);
+        navMenuIconsRestaurateur = getResources()
+                .obtainTypedArray(R.array.nav_drawer_icons_restaurateur);
+
+        navDrawerItems = new ArrayList<NavDrawerItem>();
+
+        //partie client
+
+        navDrawerItems.add(new NavDrawerItem(navMenuTitlesClient[0], navMenuIconsClients.getResourceId(0, -1)));
+
+        navDrawerItems.add(new NavDrawerItem(navMenuTitlesClient[1], navMenuIconsClients.getResourceId(1, -1)));
+
+        navDrawerItems.add(new NavDrawerItem(navMenuTitlesClient[2], navMenuIconsClients.getResourceId(2, -1)));
+
+        navDrawerItems.add(new NavDrawerItem(navMenuTitlesClient[3], navMenuIconsClients.getResourceId(3, -1)));
+
+        //partie restaurateur
+        navDrawerItems.add(new NavDrawerItem(navMenuTitlesClient[4], navMenuIconsClients.getResourceId(4, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitlesRestauranteur[0], navMenuIconsRestaurateur.getResourceId(0, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitlesRestauranteur[1], navMenuIconsRestaurateur.getResourceId(1, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitlesRestauranteur[2], navMenuIconsRestaurateur.getResourceId(2, -1)));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitlesRestauranteur[3], navMenuIconsRestaurateur.getResourceId(3, -1)));
+
+
+
+        // Recycle the typed array
+        navMenuIconsClients.recycle();
+
+        adapter = new NavDrawerItemViewListAdapter(getActivity().getApplicationContext(),
+                navDrawerItems);
+/*
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
@@ -111,7 +164,9 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
-                }));
+                }));*/
+        mDrawerListView.setAdapter(adapter);
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }

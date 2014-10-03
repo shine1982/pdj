@@ -28,6 +28,7 @@ import com.parse.ui.ParseLoginHelpFragment;
 import com.parse.ui.ParseOnLoadingListener;
 import com.parse.ui.ParseOnLoginSuccessListener;
 import com.parse.ui.ParseSignupFragment;
+import com.pdj.platdujour.fragment.client.AccueilFragment;
 
 
 public class IndexActivity extends Activity
@@ -85,12 +86,12 @@ public class IndexActivity extends Activity
         switch (position){
             case NavigationDrawerFragment.POSITION_INDEX:
                 // par défault un placeHolder
-                fragment.setArguments(args);
+                fragment = new AccueilFragment();
                 break;
-            case NavigationDrawerFragment.POSITION_LOGIN:
+            case NavigationDrawerFragment.POSITION_PLATDUJOUR:
                 fragment = ParseLoginFragment.newInstance(configOptions);
                 break;
-            case NavigationDrawerFragment.POSITION_SIGNUP:
+            case NavigationDrawerFragment.POSITION_RESTAURANTS:
                 fragment = ParseSignupFragment.newInstance(configOptions,"","");
                 break;
         }
