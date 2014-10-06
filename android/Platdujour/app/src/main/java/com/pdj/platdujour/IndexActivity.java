@@ -29,6 +29,12 @@ import com.parse.ui.ParseOnLoadingListener;
 import com.parse.ui.ParseOnLoginSuccessListener;
 import com.parse.ui.ParseSignupFragment;
 import com.pdj.platdujour.fragment.client.AccueilFragment;
+import com.pdj.platdujour.fragment.client.RestaurantsFragment;
+import com.pdj.platdujour.fragment.client.TodayDishesFragment;
+import com.pdj.platdujour.fragment.restaurateur.GererMesArdoisesFragment;
+import com.pdj.platdujour.fragment.restaurateur.MesEntreesPlatsDessertsFragment;
+import com.pdj.platdujour.fragment.restaurateur.MonArdoiseFragment;
+import com.pdj.platdujour.fragment.restaurateur.MonRestaurantFragment;
 
 
 public class IndexActivity extends Activity
@@ -89,11 +95,28 @@ public class IndexActivity extends Activity
                 fragment = new AccueilFragment();
                 break;
             case NavigationDrawerFragment.POSITION_PLATDUJOUR:
-                fragment = ParseLoginFragment.newInstance(configOptions);
+                fragment = new TodayDishesFragment();
                 break;
             case NavigationDrawerFragment.POSITION_RESTAURANTS:
-                fragment = ParseSignupFragment.newInstance(configOptions,"","");
+                fragment = new RestaurantsFragment();
                 break;
+            case NavigationDrawerFragment.POSITION_MONCOMPTE:
+                fragment = ParseLoginFragment.newInstance(configOptions);
+                break;
+            case NavigationDrawerFragment.POSITION_RESTO_MON_ARDOISE:
+                fragment = new MonArdoiseFragment();
+                break;
+            case NavigationDrawerFragment.POSITION_RESTO_MES_ENTREES_PLATS_DESSERTS:
+                fragment = new MesEntreesPlatsDessertsFragment();
+                break;
+            case NavigationDrawerFragment.POSITION_RESTO_GERER_MES_ARDOISES:
+                fragment = new GererMesArdoisesFragment();
+                break;
+            case NavigationDrawerFragment.POSITION_RESTO_MON_RESTO:
+                fragment = new MonRestaurantFragment();
+                break;
+
+
         }
 
 

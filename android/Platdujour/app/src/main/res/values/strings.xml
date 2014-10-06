@@ -73,6 +73,7 @@
     <string name="find_nearest_dishes_of_today">Trouvez votre plat du jour à proximité en appuyant le bouton de geolocalisation</string>
     <string name="find_dishes_of_today_by_input">Ou par un champs de saisie</string>
     <string name="the_dishes_of_today_by_nearby">Les plats du jour à coté de vous</string>
+    <string name="mon_ardoise_title">Le 03/10/2014  l ardoise du restaurant "Tour d argent"</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items_client">
@@ -108,5 +109,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="geoloc_button_description">geoloc button</string>
     <string name="search_button_ok">OK</string>
+    <string name="action_search">Recherche</string>
 
 </resources>

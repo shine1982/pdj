@@ -51,6 +51,11 @@ public class NavigationDrawerFragment extends Fragment {
     public static final int POSITION_RESTAURANTS=2;
     public static final int POSITION_MONCOMPTE=3;
 
+    public static final int POSITION_RESTO_MON_ARDOISE=5;
+    public static final int POSITION_RESTO_MES_ENTREES_PLATS_DESSERTS=6;
+    public static final int POSITION_RESTO_GERER_MES_ARDOISES=7;
+    public static final int POSITION_RESTO_MON_RESTO=8;
+
     /**
      * A pointer to the current callbacks instance (the Activity).
      */
@@ -308,8 +313,8 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.action_search) {
+            Toast.makeText(getActivity(), "Search", Toast.LENGTH_SHORT).show();
             return true;
         }
 
