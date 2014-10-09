@@ -28,6 +28,8 @@ app.locals._ = require('underscore');
 
 app.use('/', require('cloud/user'));
 app.use('/', require('cloud/resto'));
+app.use('/', require('cloud/espace-restaurateur'));
+
 
 // Attach the Express app to Cloud Code.
 if (process.env && process.env['DEV']) {
