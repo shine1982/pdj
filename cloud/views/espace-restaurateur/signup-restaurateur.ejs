@@ -1,0 +1,64 @@
+<h1>Création de votre compte restaurateur</h1>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Votre identifiant</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" action="/r/submitSignup" id="restaurateurSignupForm" method="POST">
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="xxx@yyy.zzz" required pattern="[\w.-]+@[\w-]+\.\w{2,6}">
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe (au moins 8 caractères) *</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe" type="password" required pattern=".{8,30}"
+                        title="au moins 8 caratères">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirmation mot de passe *</label>
+                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"
+                       placeholder="Confirmation mot de passe" required  pattern=".{8,30}"
+                       title="Vous devez entrer le même mot de passe qu'au dessus" >
+            </div>
+            <a href="/login">Login</a> &nbsp; &nbsp;
+            <button type="submit" class="btn btn-primary">Soumettre</button>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $( document).ready(function() {
+
+        $( "#restaurateurSignupForm" ).submit(function( event ) {
+
+
+            var email = $("#email").val();
+            var pwd1 = $("#password").val();
+            var pwd2 = $("#confirmPassword").val();
+            if(!_.isEmpty(email)&&!_.isEmpty(pwd1)&& pwd1===pwd2){
+                this.submit();
+                return true;
+            }else{
+
+                event.preventDefault();
+
+                if(pwd1!==pwd2){
+                    showMsg(3,"Votre confirmation de mot de passe n'est pas égale à votre mot de passe!");
+                }else{
+                    showMsg(3,"Vous n'avez pas saisi des données correctes. Veuillez revérifier votre saisi.");
+                }
+
+
+            }
+        });
+
+        $.urlParam = function(name){
+            var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+            return results[1] || 0;
+        }
+
+        if($.urlParam('error')==="202"){
+            showMsg(3,"Votre email existe déjà dans notre site. Essayer un autre email ou login avec cet email");
+        }
+
+    });
+</script>

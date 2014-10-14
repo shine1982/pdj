@@ -1,0 +1,13 @@
+<script type="text/template" id="restoManangement-template">
+    {{if (id){ }}
+    <ul class="nav nav-tabs" role="tablist">
+        <li {{ if(onglet==='todaydish'){ }} class="active" {{ } }} ><a href="#edit/ardoise">L'ardoise du restaurant</a></li>
+        <li {{ if(onglet==='ardoisesCalendarView'){ }} class="active" {{ } }} ><a href="#edit/todaydishCalendarView">Ardoises (vu calendrier)</a></li>
+        <li {{ if(onglet==='basicinfo'){ }} class="active" {{ } }} ><a href="#edit">Info restaurant</a></li>
+        <li {{ if(onglet==='photo'){ }} class="active" {{ } }} ><a href="#edit/photo">Photos</a></li>
+        <li {{ if(onglet==='contact'){ }} class="active" {{ } }} ><a href="#edit/monprofil">Mon profil</a></li>
+        <li {{ if(onglet==='menu'){ }} class="active" {{ } }} ><a href="#edit/menu">Reference</a></li>
+    </ul>
+    {{ } }}
+    <div id="restoManagement"></div>
+</script>

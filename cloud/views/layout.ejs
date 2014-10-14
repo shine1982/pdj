@@ -31,6 +31,7 @@
             interpolate: /\{\{=(.+?)\}\}/g,
             escape:      /\{\{-(.+?)\}\}/g
         };
+
     </script>
     <script src="/js/utils/utils.js"></script>
     <!--
@@ -52,7 +53,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/"> <%-pageTitle%> </a>
+            <a class="navbar-brand" href="/">Plat du jour</a>
         </div>
         <div class="collapse navbar-collapse">
             <% if(Parse.User.current()){%>

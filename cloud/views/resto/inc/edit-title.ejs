@@ -4,10 +4,11 @@
 {{if (id){ }}
 <ul class="nav nav-tabs" role="tablist">
     <li {{ if(onglet==='basicinfo'){ }} class="active" {{ } }} ><a href="#edit/{{=id}}">Info basique</a></li>
-    <li {{ if(onglet==='todaydish'){ }} class="active" {{ } }} ><a href="#edit/{{=id}}/todaydish">Plat du jour</a></li>
-    <li {{ if(onglet==='menu'){ }} class="active" {{ } }} ><a href="#edit/{{=id}}/menu">Menu</a></li>
+    <li {{ if(onglet==='ardoise'){ }} class="active" {{ } }} ><a href="#edit/{{=id}}/ardoise">Ardoise</a></li>
+    <li {{ if(onglet==='ardoisesCalenderView'){ }} class="active" {{ } }} ><a href="#edit/{{=id}}/calendrier-ardoises">Ardoises (vu calendrier)</a></li>
     <li {{ if(onglet==='photo'){ }} class="active" {{ } }} ><a href="#edit/{{=id}}/photo">Photos</a></li>
     <li {{ if(onglet==='contact'){ }} class="active" {{ } }} ><a href="#edit/{{=id}}/contact">Contact</a></li>
+    <li {{ if(onglet==='referenciel'){ }} class="active" {{ } }} ><a href="#edit/{{=id}}/referenciel">Réferentiel</a></li>
 </ul>
 {{ } }}
 <div id="restoManagement"></div>

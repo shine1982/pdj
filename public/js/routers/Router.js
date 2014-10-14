@@ -5,8 +5,9 @@ var Router = Parse.Router.extend({
         '': 'restos',
         'edit':'editResto',
         'edit/:id':'editResto',
-        'edit/:id/todaydish':'editTodayDish',
-        'edit/:id/menu':'editMenu',
+        'edit/:id/ardoise':'editArdoise',
+        'edit/:id/calendrier-ardoises':'editArdoisesCalendarView',
+        'edit/:id/referenciel':'editReferenciel',
         'edit/:id/photo':'editPhoto',
         'edit/:id/contact':'editContact'
     }
@@ -27,13 +28,18 @@ app.router.on('route:editResto', function(id){
     restaurantView.render();
 
 });
-app.router.on('route:editTodayDish', function(id){
-
-    restaurantManagementView.render(id,'todaydish');
-    var todayDishManangementView = new TodayDishManangementView(id);
+app.router.on('route:editArdoise', function(id){
+    restaurantManagementView.render(id,'ardoise');
+    var ardoiseView = new ArdoiseView(id);
+    ardoiseView.render();
+})
+app.router.on('route:editArdoisesCalendarView', function(id){
+    restaurantManagementView.render(id,'ardoisesCalenderView');
+    var ardoiseView = new ArdoiseView(id);
+    ardoiseView.render();
 });
-app.router.on('route:editMenu', function(id){
-    restaurantManagementView.render(id,'menu');
+app.router.on('route:editReferenciel', function(id){
+    restaurantManagementView.render(id,'referenciel');
     var menuView = new MenuView(id);
     menuView.render();
 

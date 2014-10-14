@@ -13,15 +13,16 @@ app.use(parseExpressHttpsRedirect());    // Automatically redirect non-secure ur
 app.use(express.bodyParser());    // Middleware for reading request body
 app.use(express.methodOverride());
 app.use(express.cookieParser('SECRET_SIGNING_KEY'));
-/*
-app.use(parseExpressCookieSession({
-    fetchUser: true,
-    key: 'resto.sess',
-    cookie: {
-        maxAge: 3600000 * 24 * 30
-    }
-}));
-*/
+if(!(process.env && process.env['DEV'])){
+    app.use(parseExpressCookieSession({
+        fetchUser: true,
+        key: 'resto.sess',
+        cookie: {
+            maxAge: 3600000 * 24 * 30
+        }
+    }));
+}
+
 app.locals._ = require('underscore');
 
 // Resto endpoints

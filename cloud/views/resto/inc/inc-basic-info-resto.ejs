@@ -1,0 +1,49 @@
+<div class="form-group">
+    <label for="name">Nom restaurant *</label>
+    <input type="text" class="form-control" name="name" value="{{=resto? resto.get('name'):''}}" required>
+</div>
+<div class="form-group">
+    <label for="address">Adresse *</label>
+    <input type="text" class="form-control" name="address" value="{{=resto? resto.get('address'):''}}" placeholder="numéro, rue, avenue...." required>
+</div>
+<div class="form-group">
+    <div class=""></div>
+    <label for="postalCode">Code postal *</label>
+    <input type="text" class="form-control" name="postalCode" pattern="\d*" maxlength="5" value="{{=resto? resto.get('postalCode'):'75000'}}" required>
+</div>
+<div class="form-group">
+    <label for="city">Ville *</label>
+    <input type="text" class="form-control" name="city" value="{{=resto? resto.get('city'):'Paris'}}" required>
+</div>
+<div class="form-group">
+    <label for="telephone">Téléphone</label>
+    <input type="tel" class="form-control" name="telephone" pattern="\d*" value="{{=resto? resto.get('telephone'):'01'}}">
+</div>
+<div class="form-group">
+    <label>Horaires d'ouverture</label>
+    <ul class="list-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                midi
+                <input type="text" pattern="\d*" size="1" name="opentimeNoonStartHour" value="{{=resto? resto.get('opentimeNoonStartHour'):'12'}}" style="text-align:right;" />
+                h<input type="text" pattern="\d*" size="1" name="opentimeNoonStartMin" value="{{=resto? resto.get('opentimeNoonStartMin'):'00'}}" >
+
+                à<input type="text" pattern="\d*" size="1" name="opentimeNoonEndHour" value="{{=resto? resto.get('opentimeNoonEndHour'):'15'}}" style="text-align:right;" />
+                h<input type="text" pattern="\d*" size="1" name="opentimeNoonEndMin" value="{{=resto? resto.get('opentimeNoonEndMin'):'00'}}" >
+
+                <br/><br/>
+                soir
+                <input type="text" pattern="\d*" size="1" name="opentimeEveningStartHour" value="{{=resto? resto.get('opentimeEveningStartHour'):'19'}}" style="text-align:right;" />
+                h<input type="text" pattern="\d*" size="1" name="opentimeEveningStartMin" value="{{=resto? resto.get('opentimeEveningStartMin'):'00'}}" >
+
+                à<input type="text" pattern="\d*" size="1" name="opentimeEveningEndHour" value="{{=resto? resto.get('opentimeEveningEndHour'):'22'}}" style="text-align:right;" />
+                h<input type="text" pattern="\d*" size="1" name="opentimeEveningEndMin" value="{{=resto? resto.get('opentimeEveningEndMin'):'00'}}" >
+                <br/><br/>
+                fermeture
+                <input type="text"  class="form-control" name="opentimeException" value="{{=resto? resto.get('opentimeException'):''}}" >
+
+            </div>
+        </div>
+
+    </ul>
+</div>

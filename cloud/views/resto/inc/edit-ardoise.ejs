@@ -1,0 +1,120 @@
+<script type="text/template" id="ardoise-template">
+    <br/>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">L'ardoise du
+
+                <input type="text" class="span1" data-date-format="dd/mm/yyyy" id="ardoiseDatepicker" size="16" style="color:darkgray;" readonly></h3>
+        </div>
+        <div class="panel-body">
+            <div id="ardoiseHeaderZone">
+                <form role="form">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" name="ardoiseTitle" value="" placeholder="Titre de l'ardoise" />
+                    </div>
+                    <div class="well" id="zoneFormulePrice">
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Plat
+                                <input type="text">€
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Entree + plat ou plat + dessert
+                                <input type="text">€
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="">
+                                Entree + plat + dessert
+                                <input type="text">€
+                            </label>
+                        </div>
+                    </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Entrée</h3>
+                </div>
+                <div class="panel-body">
+                    <table id="starter" class="table table-hover">
+                        <tr>
+                            <th>Nom d'entrée</th>
+                            <th>prix</th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <td><input id="dishName1" value="" class="form-control"/></td>
+                            <td><input id="dishPriceEuro1" value="" size="1"/>,<input size="1" id="dishPriceCentimes1" value="00"/>€ </td>
+                            <td><button class="addDish" value="1">Ajouter</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Plat</h3>
+                </div>
+                <div class="panel-body">
+                    <table id="maincourse" class="table table-hover">
+                        <tr>
+                            <th>Nom de plat</th>
+                            <th>prix</th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <td><input id="dishName2" value="" class="form-control"/></td>
+                            <td><input id="dishPriceEuro2" value="" size="1"/>,<input size="1" id="dishPriceCentimes2" value="00"/>€ </td>
+                            <td><button class="addDish" value="2">Ajouter</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Dessert</h3>
+                </div>
+                <div class="panel-body">
+                    <table id="dessert" class="table table-hover">
+                        <tr>
+                            <th>Nom de dessert</th>
+                            <th>prix</th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <td><input id="dishName3" value="" class="form-control"/></td>
+                            <td><input id="dishPriceEuro3" value="" size="1"/>,<input size="1" id="dishPriceCentimes3" value="00"/>€ </td>
+                            <td><button class="addDish" value="3">Ajouter</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+<script type="text/template" id="ardoise-formule-price-template">
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="{{=selected}}">
+            {{=label}}
+            <input type="text" value="{{=price}}">€
+        </label>
+    </div>
+</script>

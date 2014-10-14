@@ -1,0 +1,66 @@
+<h4>Veuillez compléter l'information de votre restaurant </h4>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Information de votre restaurant</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form" action="/r/espace-restaurateur" id="restoForm" method="POST">
+            <div class="form-group">
+                <label for="name">Nom restaurant *</label>
+                <input type="text" class="form-control" name="name" value="" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Adresse *</label>
+                <input type="text" class="form-control" name="address" value="" placeholder="numéro, rue, avenue...." required>
+            </div>
+            <div class="form-group">
+                <div class=""></div>
+                <label for="postalCode">Code postal *</label>
+                <input type="text" class="form-control" name="postalCode" pattern="\d*" maxlength="5" value="" required>
+            </div>
+            <div class="form-group">
+                <label for="city">Ville *</label>
+                <input type="text" class="form-control" name="city" value="Paris" required>
+            </div>
+            <div class="form-group">
+                <label for="telephone">Téléphone</label>
+                <input type="tel" class="form-control" name="telephone" pattern="\d*" value="">
+            </div>
+            <div class="form-group">
+                <label>Horaires d'ouverture</label>
+                <ul class="list-group">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            midi
+                            <input type="text" pattern="\d*" size="1" name="opentimeNoonStartHour" value="12" style="text-align:right;" />
+                            h<input type="text" pattern="\d*" size="1" name="opentimeNoonStartMin" value="00" >
+
+                            à<input type="text" pattern="\d*" size="1" name="opentimeNoonEndHour" value="15" style="text-align:right;" />
+                            h<input type="text" pattern="\d*" size="1" name="opentimeNoonEndMin" value="00" >
+
+                            <br/><br/>
+                            soir
+                            <input type="text" pattern="\d*" size="1" name="opentimeEveningStartHour" value="19" style="text-align:right;" />
+                            h<input type="text" pattern="\d*" size="1" name="opentimeEveningStartMin" value="00" >
+
+                            à<input type="text" pattern="\d*" size="1" name="opentimeEveningEndHour" value="22" style="text-align:right;" />
+                            h<input type="text" pattern="\d*" size="1" name="opentimeEveningEndMin" value="00" >
+                            <br/><br/>
+                            fermeture
+                            <input type="text"  class="form-control" name="opentimeException" value="" >
+
+                        </div>
+                    </div>
+
+                </ul>
+            </div>
+            <button type="submit" class="btn btn-primary">Soumettre</button>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $( document).ready(function() {
+        showMsg(0,"Votre compte a été créé. Un email a été envoyé à votre adresse d'email.");
+    });
+</script>

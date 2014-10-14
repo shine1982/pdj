@@ -1,37 +1,44 @@
+<% if(!resto){ %>
+<% include inc/complete-resto-info %>
+<%}else{%>
+
+<script type="text/javascript">
+    var app = app || {};
+    app.idResto = "<%=resto.id %>";
+</script>
+
+<h4>ESPACE RESTAURATEUR</h4>
 <div id="restaurntsContainer" class="container">
 
     <div class="page">
 
-
     </div>
 </div>
-<% include inc/edit-title %>
-<% include inc/edit-resto-info %>
-<% include inc/edit-ardoise %>
-<% include inc/edit-menu %>
-<% include inc/edit-photos %>
-<% include inc/edit-contact %>
-<% include inc/list%>
+<% include inc/espace-restaurateur-title.ejs %>
+<% include ../resto/inc/edit-ardoise.ejs %>
+<% include ../resto/inc/edit-resto-info %>
+<% include ../resto/inc/edit-photos %>
+<% include ../resto/inc/edit-contact %>
 
-<script src="/js/models/Ardoise.js"></script>
 <script src="/js/models/Constant.js"></script>
 <script src="/js/models/Restaurant.js"></script>
+<script src="/js/models/TodayDish.js"></script>
 <script src="/js/models/Dish.js"></script>
 <script src="/js/models/Photo.js"></script>
 <script src="/js/models/Contact.js"></script>
 <script src="/js/collections/Restaurants.js"></script>
-<script src="/js/collections/Menu.js"></script>
 <script src="/js/collections/Photos.js"></script>
 <script src="/js/collections/TodayDishList.js"></script>
 <script src="/js/views/RestaurantView.js"></script>
 <script src="/js/views/RestaurantManagementView.js"></script>
 <script src="/js/views/RestaurantsView.js"></script>
-<script src="/js/views/ardoise/ArdoiseView.js"></script>
+<script src="/js/views/TodayDishView.js"></script>
+<script src="/js/views/TodayDishManagementView.js"></script>
+<script src="/js/views/PlatdujourView.js"></script>
 <script src="/js/views/MenuView.js"></script>
 <script src="/js/views/DishView.js"></script>
 <script src="/js/views/PhotoView.js"></script>
 <script src="/js/views/PhotosView.js"></script>
 <script src="/js/views/ContactView.js"></script>
-<script src="/js/routers/Router.js"></script>
-
-
+<script src="/js/routers/Router-restaurateur.js"></script>
+<%}%>
