@@ -5,7 +5,7 @@ app.ArdoiseFormulePrice = Parse.Object.extend({
     className:"ArdoiseFormulePrice",
 
     defaults: {
-        selected:'',
+        selected:false,
         label: '',
         priceEuro: '',
         order: 1

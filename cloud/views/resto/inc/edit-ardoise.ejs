@@ -4,47 +4,32 @@
         <div class="panel-heading">
             <h3 class="panel-title">L'ardoise du
 
-                <input type="text" class="span1" data-date-format="dd/mm/yyyy" id="ardoiseDatepicker" size="16" style="color:darkgray;" readonly></h3>
+                <input type="text" class="span1" data-date-format="dd/mm/yyyy" id="ardoiseDatepicker" size="16" style="color:darkgray;" readonly>
+                <div class="pull-right">
+                    <i class="fa fa-files-o"></i> &nbsp;&nbsp;&nbsp;
+                    <i class="fa fa-external-link-square"></i>
+                </div>
+            </h3>
+
         </div>
         <div class="panel-body">
             <div id="ardoiseHeaderZone">
                 <form role="form">
+
+                        <div class="pull-right" style="margin-bottom: 10px;">
+                            <input type="submit" id="saveArdoiseBtn" class="btn btn-primary" value="Sauvegarder">
+                        </div>
+
                     <div class="form-group">
 
-                        <input type="text" class="form-control" name="ardoiseTitle" value="" placeholder="Titre de l'ardoise" />
+                        <input type="text" class="form-control" name="ardoiseTitle" id="ardoiseTitle" value="" placeholder="Titre de l'ardoise" />
                     </div>
                     <div class="well" id="zoneFormulePrice">
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Plat
-                                <input type="text">€
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Entree + plat ou plat + dessert
-                                <input type="text">€
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                Entree + plat + dessert
-                                <input type="text">€
-                            </label>
-                        </div>
-                    </div>
+                     <!-- c'est là où on saisit tous les formules avec le prix-->
                     </div>
                 </form>
             </div>
-
+            <!--
             <div class="panel panel-success">
                 <div class="panel-heading">
                     <h3 class="panel-title">Entrée</h3>
@@ -105,6 +90,7 @@
                     </table>
                 </div>
             </div>
+            -->
         </div>
     </div>
 
@@ -112,9 +98,9 @@
 <script type="text/template" id="ardoise-formule-price-template">
     <div class="checkbox">
         <label>
-            <input type="checkbox" value="{{=selected}}">
-            {{=label}}
-            <input type="text" value="{{=price}}">€
+            <input type="checkbox" value="{{=order}}" class="checkboxFormulePrice" {{=selected?"checked":""}} >
+            <label class="formulePriceLabel">{{=label}}</label>
+            <input type="text" value="{{=priceEuro}}" size="5" class="formulePriceInput" style="text-align:right;" >€
         </label>
     </div>
 </script>
