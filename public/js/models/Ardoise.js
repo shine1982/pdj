@@ -6,11 +6,6 @@ app.Ardoise = Parse.Object.extend({
 
     defaults: {
         title: 'Formule Midi',
-        formulePriceList:'',
-        startersList:'',
-        dishesList:'',
-        dessertsList:'',
-        suggestionsList:'',
         date:'',
         resto:''
     }

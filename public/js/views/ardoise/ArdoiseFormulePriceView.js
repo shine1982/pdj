@@ -2,56 +2,28 @@ Parse.Events.listenTo = Parse.Events.on;
 var ArdoiseFormulePriceView = Parse.View.extend({
 
     tagName:'div',
-    tagClass:'form-group',
+    className:'form-group',
 
     // Cache the template function for a single item.
     template: _.template($('#ardoise-formule-price-template').html()),
 
     events: {
-       'focus .formulePriceInput': 'checkItem',
-       'blur .formulePriceInput': 'uncheckItemIfEmpty',
-       "click :checkbox":'clickCheckBox'
+       "click .clear":"removeItem",
+       "blur .formulePriceInput":"setPrice"
     },
 
-    initialize: function(id) {
-        _.bindAll(this,"render","checkItem","uncheckItemIfEmpty","clickCheckBox");
+    initialize: function() {
+        this.model.toBeRemoved = false;
     },
 
-    checkItem: function(e){
-        if(!this.model.get("selected")){
-            this.model.set("selected",true);
-            this.$("input[type='checkbox']").prop('checked', true);
-            if(!this.$el.find("input[type='text']").is(":focus")){
-                this.$el.find("input[type='text']").focus();
-            }
-        }
+    removeItem:function(item){
+        //this.model.destroy();
+        this.model.toBeRemoved = true;
+        this.remove();
     },
-
-    uncheckItemIfEmpty: function(e){
-        var inputEuroValue = this.$el.find("input[type='text']").val();
-        var inputValueIsNumber=false;
-        if(inputEuroValue!=""){
-           inputEuroValue = parseInt(inputEuroValue);
-            if(!_.isNaN(inputEuroValue)){
-                inputValueIsNumber=true;
-            }
-        }
-
-        if(!inputValueIsNumber){
-            this.$el.find("input[type='text']").val("");
-            this.model.set("selected",false);
-            this.$("input[type='checkbox']").prop('checked', false);
-        }
-    },
-
-    clickCheckBox: function(e){
-        if(e.currentTarget.checked){
-            if(!this.$el.find("input[type='text']").is(":focus")){
-                this.$el.find("input[type='text']").focus();
-            }
-        }else{
-            this.$el.find("input[type='text']").val("");
-        }
+    setPrice:function(e){
+        this.model.set("priceEuro", e.currentTarget.value);
+        this.model.save();
     },
 
     render: function() {

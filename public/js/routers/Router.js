@@ -1,6 +1,6 @@
 var app = app || {};
 
-var Router = Parse.Router.extend({
+app.Router = Parse.Router.extend({
     routes: {
         '': 'restos',
         'edit':'editResto',
@@ -13,47 +13,45 @@ var Router = Parse.Router.extend({
     }
 }
 )
-app.router = new Router();
+app.router = new app.Router();
 app.resto = null; // resto en train d'être édité
+
 app.router.on('route:restos', function(){
-   var restaurantsView = new RestaurantsView();
-   restaurantsView.render();
+   new app.RestaurantsView();
 });
-var restaurantManagementView = new RestaurantManagementView();
+app.restaurantManagementView = new app.RestaurantManagementView();
+function showOnglet(id,onglet){
+    app.restaurantManagementView.render(id,onglet);
+}
 
 app.router.on('route:editResto', function(id){
-
-    restaurantManagementView.render(id,'basicinfo');
-    var restaurantView = new RestaurantView(id);
-    restaurantView.render();
-
+    showOnglet(id,'basicinfo');
+    if(id){
+        getRestoByIdThenExecuteFonc(id, function(){new app.RestaurantView();});
+    }else{
+        new app.RestaurantView();
+    }
 });
 app.router.on('route:editArdoise', function(id){
-    restaurantManagementView.render(id,'ardoise');
-    var ardoiseView = new ArdoiseView(id);
-    ardoiseView.render();
+    showOnglet(id,'ardoise');
+    getRestoByIdThenExecuteFonc(id, function(){new app.ArdoisePanelView();});
 })
 app.router.on('route:editArdoisesCalendarView', function(id){
-    restaurantManagementView.render(id,'ardoisesCalenderView');
-    var ardoiseView = new ArdoiseView(id);
-    ardoiseView.render();
-});
-app.router.on('route:editReferenciel', function(id){
-    restaurantManagementView.render(id,'referenciel');
-    var menuView = new MenuView(id);
-    menuView.render();
+    showOnglet(id,'ardoisesCalenderView');
 
 });
+
 app.router.on('route:editPhoto', function(id){
-    restaurantManagementView.render(id,'photo');
-    var photosView = new PhotosView(id);
-    photosView.render();
-
+    showOnglet(id,'photo');
+    getRestoByIdThenExecuteFonc(id, function(){new app.PhotosView();});
 });
 app.router.on('route:editContact', function(id){
-    restaurantManagementView.render(id,'contact');
-    var contactView = new ContactView(id);
-    contactView.render();
-
+    showOnglet(id,'contact');
+    getRestoByIdThenExecuteFonc(id, function(){new  app.ContactView()});
+});
+app.router.on('route:editReferenciel', function(id){
+    showOnglet(id,'referenciel');
+    var menuView = new MenuView(id);
+    menuView.render();
 });
 Parse.history.start();

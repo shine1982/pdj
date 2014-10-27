@@ -1,49 +1,25 @@
-var RestaurantView = Parse.View.extend({
+var app = app || {};
+app.RestaurantView = Parse.View.extend({
 
-    //... is a list tag.
     el:'#restoManagement',
 
-    // Cache the template function for a single item.
     template: _.template($('#addresto-template').html()),
 
-    // The DOM events specific to an item.
     events: {
         'submit form': 'saveResto'
     },
 
-    // The TodoView listens for changes to its model, re-rendering. Since there's
-    // a one-to-one correspondence between a **Todo** and a **TodoView** in this
-    // app, we set a direct reference on the model for convenience.
-    initialize: function(id) {
-        this.idResto = id;
+    initialize: function() {
 
-       // this.listenTo(this.model, 'change', this.render);
+        this.render();
     },
 
     render: function() {
-        var that = this;
-        if(this.idResto){
-            if(app.resto && app.resto.id===this.idResto){
-                that.$el.html( that.template({resto: app.resto}));
-                that.resto=app.resto;
-            }else{
-                var query = new Parse.Query(app.Restaurant);
-                query.get(this.idResto, {
-                    success: function(resto) {
-                        that.$el.html( that.template({resto: resto}) );
-                        app.resto = resto;
-                        that.resto=resto;
-                    },
-                    error: function(object, error) {
-                        showMsg(3,"Error pour récuperer le resto avec id "+this.idResto +" ("+error+")");
-                    }
-                });
-            }
-
+        if(app.resto){
+            this.$el.html( this.template({resto: app.resto}) );
         }else{
-            this.$el.html( this.template({resto:false}) );
+            this.$el.html( this.template({resto: false}) );
         }
-
         return this;
     },
 
@@ -51,15 +27,12 @@ var RestaurantView = Parse.View.extend({
         e.preventDefault();
 
         var data = Backbone.Syphon.serialize(this);
-        var resto;
-        var isModeModify=false;
-        if(this.resto){
-            resto = this.resto;
-            isModeModify=true;
-        }else{
+        var resto = app.resto;
+        var isModeModify=true;
+        if(!resto){
             resto = new app.Restaurant();
+            isModeModify=false;
         }
-
         resto.set(data);
         // Set up the ACL so everyone can read the image
         // but only the owner can have write access
@@ -91,9 +64,5 @@ var RestaurantView = Parse.View.extend({
                 showMsg(3,error.message);
             }
         });
-
     }
-
-
-
 });

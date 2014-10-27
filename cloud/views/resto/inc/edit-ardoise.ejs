@@ -1,4 +1,4 @@
-<script type="text/template" id="ardoise-template">
+<script type="text/template" id="ardoise-panel-template">
     <br/>
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -6,101 +6,52 @@
 
                 <input type="text" class="span1" data-date-format="dd/mm/yyyy" id="ardoiseDatepicker" size="16" style="color:darkgray;" readonly>
                 <div class="pull-right">
-                    <i class="fa fa-files-o"></i> &nbsp;&nbsp;&nbsp;
                     <i class="fa fa-external-link-square"></i>
                 </div>
             </h3>
 
         </div>
         <div class="panel-body">
-            <div id="ardoiseHeaderZone">
-                <form role="form">
+            <div id="ardoise">
 
-                        <div class="pull-right" style="margin-bottom: 10px;">
-                            <input type="submit" id="saveArdoiseBtn" class="btn btn-primary" value="Sauvegarder">
-                        </div>
-
-                    <div class="form-group">
-
-                        <input type="text" class="form-control" name="ardoiseTitle" id="ardoiseTitle" value="" placeholder="Titre de l'ardoise" />
-                    </div>
-                    <div class="well" id="zoneFormulePrice">
-                     <!-- c'est là où on saisit tous les formules avec le prix-->
-                    </div>
-                </form>
             </div>
-            <!--
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Entrée</h3>
-                </div>
-                <div class="panel-body">
-                    <table id="starter" class="table table-hover">
-                        <tr>
-                            <th>Nom d'entrée</th>
-                            <th>prix</th>
-                            <th></th>
-                        </tr>
-
-                        <tr>
-                            <td><input id="dishName1" value="" class="form-control"/></td>
-                            <td><input id="dishPriceEuro1" value="" size="1"/>,<input size="1" id="dishPriceCentimes1" value="00"/>€ </td>
-                            <td><button class="addDish" value="1">Ajouter</button></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Plat</h3>
-                </div>
-                <div class="panel-body">
-                    <table id="maincourse" class="table table-hover">
-                        <tr>
-                            <th>Nom de plat</th>
-                            <th>prix</th>
-                            <th></th>
-                        </tr>
-
-                        <tr>
-                            <td><input id="dishName2" value="" class="form-control"/></td>
-                            <td><input id="dishPriceEuro2" value="" size="1"/>,<input size="1" id="dishPriceCentimes2" value="00"/>€ </td>
-                            <td><button class="addDish" value="2">Ajouter</button></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Dessert</h3>
-                </div>
-                <div class="panel-body">
-                    <table id="dessert" class="table table-hover">
-                        <tr>
-                            <th>Nom de dessert</th>
-                            <th>prix</th>
-                            <th></th>
-                        </tr>
-
-                        <tr>
-                            <td><input id="dishName3" value="" class="form-control"/></td>
-                            <td><input id="dishPriceEuro3" value="" size="1"/>,<input size="1" id="dishPriceCentimes3" value="00"/>€ </td>
-                            <td><button class="addDish" value="3">Ajouter</button></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            -->
         </div>
     </div>
 
 </script>
-<script type="text/template" id="ardoise-formule-price-template">
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" value="{{=order}}" class="checkboxFormulePrice" {{=selected?"checked":""}} >
-            <label class="formulePriceLabel">{{=label}}</label>
-            <input type="text" value="{{=priceEuro}}" size="5" class="formulePriceInput" style="text-align:right;" >€
-        </label>
+<script type="text/template" id="ardoise-template">
+    {{if(modify){ }}
+    <div id="ardoiseHeaderZone">
+
+        <form role="form">
+            <div class="pull-right" style="margin-bottom: 10px;">
+                <input type="submit" id="saveArdoiseBtn" class="btn btn-primary" value="Sauvegarder">
+            </div>
+            <div class="form-group">
+
+                <input type="text" class="form-control" name="ardoiseTitle" id="ardoiseTitle" value="{{=ardoise.get('title')}}" placeholder="Titre de l'ardoise" />
+
+            </div>
+            <div class="well" id="zoneFormulePrice">
+                <!-- c'est là où on saisit tous les formules avec le prix-->
+
+            </div>
+        </form>
     </div>
+    {{ }else if(!alreadyCreatedArdoise){ }}
+        <p>Appuyer ce button <button class="btnCreateArdoise btn btn-success btn-lg">Créer</button> pour créer votre permière ardoise!</p>
+    {{ }else{ }}
+        <p>Vous n'avez pas encore créé une ardoise pour cette date. Vous pouvez</p>
+        <p>Appuyer ce button <button class="btn btn-success btn-lg">Importer</button> pour créer une ardoise en important l'ardoise d'une autre date</p>
+        <p>ou</p>
+        <p>Appuyer ce button <button class="btnCreateArdoise btn btn-success" id="btnCreateArdoise">Créer</button> pour créer une ardoise à partir de zero</p>
+    {{ } }}
+
+</script>
+<script type="text/template" id="ardoise-formule-price-template">
+
+   <input type="button" value="Remove" class="clear"/>
+   <label class="formulePriceLabel">{{=label}}</label>
+   <input type="text" value="{{=priceEuro}}" size="5" class="formulePriceInput" style="text-align:right;" >€
+
 </script>

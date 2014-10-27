@@ -1,21 +1,43 @@
-var RestaurantsView = Parse.View.extend({
+var app = app || {};
+app.RestaurantsView = Parse.View.extend({
 
-    //... is a list tag.
     el: '.page',
 
-    // Cache the template function for a single item.
     template: _.template($('#restos-template').html()),
 
+    initialize:function(){
+        _.bindAll(this,"addOne","addAll","render");
+        this.render();
+        var query = new Parse.Query(app.Restaurant);
+        query.descending("createdAt");
+        app.restos = query.collection();
+        app.restos.on('add',this.addOne);
+        app.restos.on('reset', this.addAll);
+        app.restos.fetch();
+
+    },
+
+    addOne: function( resto ) {
+        var view = new app.RestaurantsItemView({ model: resto });
+        $("#restosTable tbody").append( view.render().el );
+    },
+    addAll: function( restos ) {
+        $("#restosTable tbody").empty();
+        app.restos.each(this.addOne, this);
+    },
 
     render : function(){
+        this.$el.html(this.template());
+    }
+});
 
-        var that=this;
-        var restos = new Restaurants();
-        restos.fetch({
-            success:function(restos){
-                that.$el.html(that.template({'resto': restos.models}));
-            }
-        })
+app.RestaurantsItemView = Parse.View.extend({
+
+    tagName:"tr",
+    template: _.template($('#restos-oneItem-template').html()),
+    render : function(){
+        this.$el.html(this.template(_.extend(this.model.attributes, {id:this.model.id})) );
+        return this;
     }
 });
 

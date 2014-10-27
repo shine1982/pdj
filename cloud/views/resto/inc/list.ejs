@@ -2,34 +2,29 @@
 
     <a href="#edit" class="btn btn-primary" id="addResto">Ajouter un restaurant</a>
     <hr/>
-    <% if(restos.length >0){ %>
     <h3>Les restaurants</h3>
-
-    <table class="table table-hover table-condensed">
-        <thead><tr>
-            <th>Ardoise</th>
-            <th>Nom</th>
-            <th>Adresse</th>
-            <th>Code postal</th>
-            <th>Ville</th>
-            <th></th>
-        </tr></thead>
-        <% _(restos).each(function(resto){%>
-        <tr>
-            <td width="20%">
-                <img src="<%=_.isUndefined(resto.get("platdujour"))?'':resto.get("platdujourUrl") %>" alt="no image" class="img-circle">
-            </td>
-            <td><%=resto.get("name")%></td>
-            <td><%=resto.get("address")%></td>
-            <td><%=resto.get("postalCode")%></td>
-            <td><%=resto.get("city")%></td>
-            <td>
-                <a href="#edit/<%=resto.id%>" data-toggle="tooltip" data-placement="top" title="Edit" data-delay="0" class="btn-default">
-                <span class="glyphicon glyphicon-pencil editRestoBtn"></span>
-            </a>
-            </td>
-        </tr>
-        <%})%>
+    <table class="table table-hover table-condensed" id="restosTable">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Code postal</th>
+                <th>Ville</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
     </table>
-    <%}%>
+
+</script>
+<script type="text/template" id="restos-oneItem-template">
+    <td>{{=name}}</td>
+    <td>{{=address}}</td>
+    <td>{{=postalCode}}</td>
+    <td>{{=city}}</td>
+    <td>
+        <a href="#edit/{{=id}}" data-toggle="tooltip" data-placement="top" title="Edit" data-delay="0" class="btn-default">
+            <span class="glyphicon glyphicon-pencil editRestoBtn"></span>
+        </a>
+    </td>
 </script>

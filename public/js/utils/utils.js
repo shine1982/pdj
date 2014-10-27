@@ -1,14 +1,31 @@
 var msgLevelConstants=["success","info","warning","danger"];
 function showMsg(level, msg){
-    $("#msgPanel").fadeOut();
-    $("#msgPanel").html(_.template($("#msgPanel").html())({level:msgLevelConstants[level], msg:msg}));
+    $("#msgPanel").hide();
+    $("#msgPanel").html(_.template($("#msg-template").html())({level:msgLevelConstants[level], msg:msg}));
     $('html, body').animate(
         {scrollTop: 0},
         'fast',
         function(){
-            $("#msgPanel").fadeIn();
+            $("#msgPanel").show();
         }
     );
+}
+
+function getRestoByIdThenExecuteFonc(id, functionToExecute){
+    if(app.resto && app.resto.id === id){
+        functionToExecute();
+    }else{
+        var query = new Parse.Query(app.Restaurant);
+        query.get(id, {
+            success: function(resto) {
+                app.resto = resto;
+                functionToExecute();
+            },
+            error: function(object, error) {
+                showMsg(3,"Error pour récuperer le resto avec id "+id+" ("+error+")");
+            }
+        });
+    }
 }
 
 //for traitement photo

@@ -1,4 +1,5 @@
-var PhotosView = Parse.View.extend({
+var app = app || {};
+app.PhotosView = Parse.View.extend({
 
     //... is a list tag.
     el:'#restoManagement',
@@ -16,29 +17,10 @@ var PhotosView = Parse.View.extend({
         'click #submitCroppedPhoto': 'submitCroppedPhoto'
     },
     initialize: function(id) {
-        var that = this;
-        that.idResto = id;
 
-        if(id){
-            if(app.resto && app.resto.id === id){
-                this.initPhotos();
-            }else{
-                var query = new Parse.Query(app.Restaurant);
-                query.get(id, {
-                    success: function(resto) {
-                        app.resto = resto;
-                        that.initPhotos();
-                    },
-                    error: function(object, error) {
-                        showMsg(3,"Error pour récuperer le resto avec id "+that.idResto +" ("+error+")");
-                    }
-                });
-            }
-        }
-    },
-    initPhotos:function(){
         app.resto.photos = new app.Photos();
         app.resto.photos.on('add', this.addOne);
+        this.render();
 
         var queryPhotos = new Parse.Query(app.Photo);
         queryPhotos.equalTo("resto", app.resto);
