@@ -9,7 +9,10 @@ var ArdoiseFormulePriceView = Parse.View.extend({
 
     events: {
        "click .clear":"removeItem",
-       "blur .formulePriceInput":"setPrice"
+       "blur .formulePriceInput":"setPrice",
+       "dblclick .formulePriceLabel": "startEditingMode",
+       "blur .formulePriceLabelInput": "endEditingMode"
+
     },
 
     initialize: function() {
@@ -24,6 +27,18 @@ var ArdoiseFormulePriceView = Parse.View.extend({
     setPrice:function(e){
         this.model.set("priceEuro", e.currentTarget.value);
         this.model.save();
+    },
+
+    startEditingMode:function(){
+
+        this.$(".formulePriceLine").addClass("editing");
+    },
+    endEditingMode:function(){
+        this.$(".formulePriceLine").removeClass("editing");
+        var newLabel = this.$(".formulePriceLabelInput").val();
+        this.model.set("label", newLabel);
+        this.model.save();
+        this.render();
     },
 
     render: function() {

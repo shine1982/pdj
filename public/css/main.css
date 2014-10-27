@@ -75,3 +75,16 @@ td.editing .priceview{
 td.editing .priceedit{
     display: inline-block;
 }
+
+#zoneFormulePrice .formulePriceLabel{
+    display: inline-block;
+}
+#zoneFormulePrice .formulePriceLabelInput {
+    display: none;
+}
+#zoneFormulePrice .editing .formulePriceLabel{
+    display: none;
+}
+#zoneFormulePrice .editing .formulePriceLabelInput{
+    display: inline-block;
+}

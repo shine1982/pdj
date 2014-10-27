@@ -5,11 +5,13 @@ app.ArdoiseView = Parse.View.extend({
     template: _.template($('#ardoise-template').html()),
 
     events: {
+        "click .addFormulePriceBtn":"addNewFormulePrice",
         "click #saveArdoiseBtn":'saveArdoise',
-        "click #btnCreateArdoise":'createNewArdoise'
+        "click .btnCreateArdoise":'createNewArdoise'
     },
 
     initialize: function() {
+        _.bindAll(this,"addNewFormulePrice");
         this.render();
 
         app.resto.ardoiseOfDate.formulePriceList = new app.ArdoiseFormulePriceList();
@@ -27,42 +29,42 @@ app.ArdoiseView = Parse.View.extend({
     },
 
     initFormulePriceListFromZero:function(){
-
+            var that = this;
             var queryArdoiseFormulePrice = new Parse.Query(app.ArdoiseFormulePrice);
             queryArdoiseFormulePrice.ascending("order");
             queryArdoiseFormulePrice.equalTo("resto",app.resto);
             queryArdoiseFormulePrice.limit(3);
             queryArdoiseFormulePrice.find().then(function(list){
                 if(list.length === 0){
-                    var platFP = new app.ArdoiseFormulePrice();
-                    platFP.set("label","plat");
-                    platFP.set("resto",app.resto);
-                    platFP.set("order",1);
-                    platFP.save().then(
-                        function(platFP){
-                            app.resto.ardoiseOfDate.formulePriceList.add(platFP);
-                            var platDessertFP = new app.ArdoiseFormulePrice();
-                            platDessertFP.set("label","entree + plat ou plat + dessert");
-                            platDessertFP.set("resto",app.resto);
-                            platDessertFP.set("order",2);
-                            platDessertFP.save().then(function(platDessertFP){
-                                app.resto.ardoiseOfDate.formulePriceList.add(platDessertFP);
-                                var entreePlatDessertFP = new app.ArdoiseFormulePrice();
-                                entreePlatDessertFP.set("label","entree + plat + dessert");
-                                entreePlatDessertFP.set("resto",app.resto);
-                                entreePlatDessertFP.set("order",3);
-                                entreePlatDessertFP.save().then(function(entreePlatDessertFP){
-                                    app.resto.ardoiseOfDate.formulePriceList.add(entreePlatDessertFP);
-                                })
-                            })
-                        }
-                    );
+                    var labelArrays = ["plat","entree + plat ou plat + dessert", "entree + plat + dessert"];
+                    for(var i=0; i<labelArrays.length; i++){
+                        that.newFormulePrice(labelArrays[i],function(afp){
+                            app.resto.ardoiseOfDate.formulePriceList.add(afp);
+                        })
+                    }
                 }else{
                     app.resto.ardoiseOfDate.formulePriceList.add(list);
                 }
             })
 
 
+    },
+    newFormulePrice:function(label,callback){
+        var afp = new app.ArdoiseFormulePrice();
+        afp.set("label",label);
+        afp.set("resto",app.resto);
+        afp.set("order",app.resto.ardoiseOfDate.formulePriceList.getNextOrder());
+        afp.save().then(
+            function(afp){
+                callback(afp);
+            }
+        )
+    },
+    addNewFormulePrice:function(e){
+        e.preventDefault();
+        this.newFormulePrice("double cliquez-moi pour modifier!",function(afp){
+            app.resto.ardoiseOfDate.formulePriceList.add(afp);
+        });
     },
 
     initFormulePriceListFromRelation:function(){
@@ -88,16 +90,19 @@ app.ArdoiseView = Parse.View.extend({
             if(hasAlreadyArdoise){
                 showMsg(3,"l'ardoise de cette date existe déjà");
             }else{
+                that.options.modify=true;
+                that.render();
                 app.resto.ardoiseOfDate.set("resto",app.resto);
                 app.resto.ardoiseOfDate.set("date",datejsForArdoise);
-
+                that.initFormulePriceListFromZero();
+                that.updateFormulePriceList(false, function(relationFPL){
+                    app.resto.ardoiseOfDate.formulePriceList.forEach (function (fpl) { relationFPL.add(fpl);
+                });
                 app.resto.ardoiseOfDate.save().then(function(){
-                    showMsg(0, "Vous venez de créer votre ardoise, modifiez la dés maintenant pour adapter la réalité de votre restaurant!");
-                    that.options.modify=true;
-                    that.render();
-                    that.initFormulePriceListFromZero();
+                        showMsg(0, "Vous venez de créer votre ardoise, modifiez la dés maintenant pour adapter la réalité de votre restaurant!");
+                    });
+                });
 
-                })
             }
         })
 
@@ -135,7 +140,7 @@ app.ArdoiseView = Parse.View.extend({
         ardoise.set("date",datejsForArdoise);
         ardoise.set("title",ardoiseTitle);
 
-        this.updateFormulePriceList(function(relationFPL){
+        this.updateFormulePriceList(this.options.modify,function(relationFPL){
             app.resto.ardoiseOfDate.formulePriceList.forEach (function (fpl) {
                 if(!fpl.toBeRemoved){
                     relationFPL.add(fpl);
@@ -146,9 +151,9 @@ app.ArdoiseView = Parse.View.extend({
             });
         })
     },
-    updateFormulePriceList:function(callback){
+    updateFormulePriceList:function(modify, callback){
         var relationFPL = app.resto.ardoiseOfDate.relation("formulePriceList");
-        if(this.options.modify){
+        if(modify){
             relationFPL.query().find().then(function(results){
                 relationFPL.remove(results);
                 callback(relationFPL);

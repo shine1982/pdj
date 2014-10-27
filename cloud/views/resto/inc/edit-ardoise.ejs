@@ -34,7 +34,7 @@
             </div>
             <div class="well" id="zoneFormulePrice">
                 <!-- c'est là où on saisit tous les formules avec le prix-->
-
+                <p><button class="addFormulePriceBtn"><i class="fa fa-plus"></i> Ajouter</button></p>
             </div>
         </form>
     </div>
@@ -44,14 +44,16 @@
         <p>Vous n'avez pas encore créé une ardoise pour cette date. Vous pouvez</p>
         <p>Appuyer ce button <button class="btn btn-success btn-lg">Importer</button> pour créer une ardoise en important l'ardoise d'une autre date</p>
         <p>ou</p>
-        <p>Appuyer ce button <button class="btnCreateArdoise btn btn-success" id="btnCreateArdoise">Créer</button> pour créer une ardoise à partir de zero</p>
+        <p>Appuyer ce button <button class="btnCreateArdoise btn btn-success">Créer</button> pour créer une ardoise à partir de zero</p>
     {{ } }}
 
 </script>
 <script type="text/template" id="ardoise-formule-price-template">
+    <div class="formulePriceLine">
+   <i class="fa fa-trash fa-lg clear"></i>
 
-   <input type="button" value="Remove" class="clear"/>
    <label class="formulePriceLabel">{{=label}}</label>
-   <input type="text" value="{{=priceEuro}}" size="5" class="formulePriceInput" style="text-align:right;" >€
-
+   <input class="formulePriceLabelInput" value="{{=label}}"/>
+   <input type="text" value="{{=priceEuro}}" maxlength="5" size="3" class="formulePriceInput" style="text-align:right;" >€
+    </div>
 </script>
