@@ -11,7 +11,7 @@ app.ArdoiseView = Parse.View.extend({
     },
 
     initialize: function() {
-        _.bindAll(this,"addNewFormulePrice");
+        _.bindAll(this,"addNewFormulePrice","saveArdoise","createNewArdoise");
         this.render();
 
         app.resto.ardoiseOfDate.formulePriceList = new app.ArdoiseFormulePriceList();
@@ -28,7 +28,7 @@ app.ArdoiseView = Parse.View.extend({
         return this;
     },
 
-    initFormulePriceListFromZero:function(){
+    initFormulePriceListFromZero:function(callback){
             var that = this;
             var queryArdoiseFormulePrice = new Parse.Query(app.ArdoiseFormulePrice);
             queryArdoiseFormulePrice.ascending("order");
@@ -45,6 +45,7 @@ app.ArdoiseView = Parse.View.extend({
                 }else{
                     app.resto.ardoiseOfDate.formulePriceList.add(list);
                 }
+                callback();
             })
 
 
@@ -92,16 +93,12 @@ app.ArdoiseView = Parse.View.extend({
             }else{
                 that.options.modify=true;
                 that.render();
-                app.resto.ardoiseOfDate.set("resto",app.resto);
-                app.resto.ardoiseOfDate.set("date",datejsForArdoise);
-                that.initFormulePriceListFromZero();
-                that.updateFormulePriceList(false, function(relationFPL){
-                    app.resto.ardoiseOfDate.formulePriceList.forEach (function (fpl) { relationFPL.add(fpl);
-                });
-                app.resto.ardoiseOfDate.save().then(function(){
-                        showMsg(0, "Vous venez de créer votre ardoise, modifiez la dés maintenant pour adapter la réalité de votre restaurant!");
-                    });
-                });
+                that.initFormulePriceListFromZero(
+                    function(){
+                        that.saveArdoiseToBase("Vous venez de créer votre ardoise, modifiez la dés maintenant pour adapter la réalité de votre restaurant!");
+                    }
+                );
+
 
             }
         })
@@ -131,6 +128,10 @@ app.ArdoiseView = Parse.View.extend({
 
     saveArdoise:function(e){
         e.preventDefault();
+        this.saveArdoiseToBase("L'ardoise a été sauvegardé pour la date "+ $('#ardoiseDatepicker').val());
+
+    },
+    saveArdoiseToBase:function(msgToShow){
         var datejsForArdoise = moment($('#ardoiseDatepicker').val(), "DD/MM/YYYY").toDate();
         var ardoiseTitle = $("#ardoiseTitle").val();
 
@@ -147,13 +148,13 @@ app.ArdoiseView = Parse.View.extend({
                 }
             });
             ardoise.save().then(function(){
-                showMsg(0,"L'ardoise a été sauvegardé pour la date "+ $('#ardoiseDatepicker').val());
+                showMsg(0,msgToShow);
             });
         })
     },
     updateFormulePriceList:function(modify, callback){
         var relationFPL = app.resto.ardoiseOfDate.relation("formulePriceList");
-        if(modify){
+        if(modify && app.resto.ardoiseOfDate.id){
             relationFPL.query().find().then(function(results){
                 relationFPL.remove(results);
                 callback(relationFPL);
