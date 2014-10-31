@@ -40,7 +40,13 @@ app.ArdoiseDishesBlocView = Parse.View.extend({
     },
 
     render: function() {
-        this.$el.html( this.template(this.model.attributes));
+        var theme = "default";
+        var themeArray = ["success","info","warning"];
+        var order = this.model.get('order');
+        if(order>0 && order<=themeArray.length){
+            theme = themeArray[order-1];
+        }
+        this.$el.html( this.template(_.extend(this.model.attributes, {id:this.model.id},{theme:theme})));
         return this;
     }
 });

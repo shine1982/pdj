@@ -19,6 +19,9 @@ app.ArdoiseView = Parse.View.extend({
         "click .hideAddDishesBlocBtn":"hideAddNewDishesBloc",
         "click .addDishesBlocBtn":"addNewDishesBloc"
 
+        //dishes
+
+
     },
 
     initialize: function() {
