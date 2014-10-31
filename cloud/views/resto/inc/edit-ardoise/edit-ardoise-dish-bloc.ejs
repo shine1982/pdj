@@ -1,0 +1,19 @@
+<script type="text/template" id="ardoise-dishes-bloc-template">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title dishesBlocLine">
+                {{ if(order>3){ }}
+                <i class="fa fa-trash fa-lg clear"></i>
+                {{ } }}
+                <label class="dishesBlocLabel">{{=label}}</label>
+                <input type="text" value="{{=label}}" class="dishesBlocLabelInput"/>
+                <div class="pull-right">
+                    <input class="dishesBlocPriceInput" type="text" value="{{=priceEuro}}" size="3" style="text-align: right"/> €
+                </div>
+            </h3>
+        </div>
+        <div class="panel-body">
+
+        </div>
+    </div>
+</script>

@@ -1,21 +1,18 @@
-Parse.Events.listenTo = Parse.Events.on;
 var app = app || {};
-app.ArdoiseFormulePriceView = Parse.View.extend({
+app.ArdoiseDishesBlocView = Parse.View.extend({
 
     tagName:'div',
-    className:'form-group',
 
     // Cache the template function for a single item.
-    template: _.template($('#ardoise-formule-price-template').html()),
+    template: _.template($('#ardoise-dishes-bloc-template').html()),
 
     events: {
        "click .clear":"removeItem",
-       "blur .formulePriceInput":"setPrice",
-       "click .formulePriceLabel": "startEditingMode",
-       "blur .formulePriceLabelInput": "endEditingMode"
+       "blur .dishesBlocPriceInput":"setPrice",
+       "click .dishesBlocLabel": "startEditingMode",
+       "blur .dishesBlocLabelInput": "endEditingMode"
 
     },
-
     initialize: function() {
         _.bindAll(this,"render","removeItem");
         this.model.toBeRemoved = false;
@@ -27,17 +24,17 @@ app.ArdoiseFormulePriceView = Parse.View.extend({
         this.remove();
     },
     setPrice:function(e){
-        this.model.set("priceEuro", this.$(".formulePriceInput").val());
+        this.model.set("priceEuro", this.$(".dishesBlocPriceInput").val());
         this.model.save();
     },
 
     startEditingMode:function(){
-        this.$(".formulePriceLine").addClass("editing");
-        this.$(".formulePriceLabelInput").focus();
+        this.$(".dishesBlocLine").addClass("editing");
+        this.$(".dishesBlocLabelInput").focus();
     },
     endEditingMode:function(){
-        this.$(".formulePriceLine").removeClass("editing");
-        this.model.set("label", this.$(".formulePriceLabelInput").val());
+        this.$(".dishesBlocLine").removeClass("editing");
+        this.model.set("label", this.$(".dishesBlocLabelInput").val());
         this.model.save();
 
     },

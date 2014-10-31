@@ -5,83 +5,91 @@ app.ArdoiseView = Parse.View.extend({
     template: _.template($('#ardoise-template').html()),
 
     events: {
-        "click .addFormulePriceBtn":"addNewFormulePrice",
+        //ardoise
         "click #saveArdoiseBtn":'saveArdoise',
-        "click .btnCreateArdoise":'createNewArdoise'
+        "click .btnCreateArdoise":'createNewArdoise',
+
+        //formule price
+        "click .showAddFormulePriceBtn":"showAddNewFormulePrice",
+        "click .hideAddFormulePriceBtn":"hideAddNewFormulePrice",
+        "click .addFormulePriceBtn":"addNewFormulePrice",
+
+        //dishes bloc
+        "click .showAddDishesBlocBtn":"showAddNewDishesBloc",
+        "click .hideAddDishesBlocBtn":"hideAddNewDishesBloc",
+        "click .addDishesBlocBtn":"addNewDishesBloc"
+
     },
 
     initialize: function() {
-        _.bindAll(this,"addNewFormulePrice","saveArdoise","createNewArdoise");
+        _.bindAll(this,"saveArdoise","createNewArdoise",
+            "addNewFormulePrice","showAddNewFormulePrice","hideAddNewFormulePrice","addFormulePrice",
+            "addNewDishesBloc","showAddNewDishesBloc","hideAddNewDishesBloc","addDishesBloc");
+
         this.render();
 
+        this.formulePricehelper = new ArdoiseFormulePriceHelper(this);
+        this.dishesBlochelper = new ArdoiseDishesBlocHelper(this);
+
         app.resto.ardoiseOfDate.formulePriceList = new app.ArdoiseFormulePriceList();
+        app.resto.ardoiseOfDate.dishesBlocList = new app.ArdoiseDishesBlocList();
         app.resto.ardoiseOfDate.formulePriceList.on('add', this.addFormulePrice);
+        app.resto.ardoiseOfDate.dishesBlocList.on('add',this.addDishesBloc);
 
         if(this.options.modify){
             this.initFormulePriceListFromRelation();
+            this.initDishesBlocListFromRelation();
         }
     },
 
     render: function() {
-
         this.$el.html( this.template(this.options));
         return this;
     },
 
+    /* Zone Formule Price */
     initFormulePriceListFromZero:function(callback){
-            var that = this;
-            var queryArdoiseFormulePrice = new Parse.Query(app.ArdoiseFormulePrice);
-            queryArdoiseFormulePrice.ascending("order");
-            queryArdoiseFormulePrice.equalTo("resto",app.resto);
-            queryArdoiseFormulePrice.limit(3);
-            queryArdoiseFormulePrice.find().then(function(list){
-                if(list.length === 0){
-                    var labelArrays = ["plat","entree + plat ou plat + dessert", "entree + plat + dessert"];
-                    for(var i=0; i<labelArrays.length; i++){
-                        that.newFormulePrice(labelArrays[i],function(afp){
-                            app.resto.ardoiseOfDate.formulePriceList.add(afp);
-                        })
-                    }
-                }else{
-                    app.resto.ardoiseOfDate.formulePriceList.add(list);
-                }
-                callback();
-            })
-
-
+        this.formulePricehelper.initFormulePriceListFromZero(callback);
     },
-    newFormulePrice:function(label,callback){
-        var afp = new app.ArdoiseFormulePrice();
-        afp.set("label",label);
-        afp.set("resto",app.resto);
-        afp.set("order",app.resto.ardoiseOfDate.formulePriceList.getNextOrder());
-        afp.save().then(
-            function(afp){
-                callback(afp);
-            }
-        )
+    initFormulePriceListFromRelation:function(){
+        this.formulePricehelper.initFormulePriceListFromRelation();
     },
     addNewFormulePrice:function(e){
-        e.preventDefault();
-        this.newFormulePrice("double cliquez-moi pour modifier!",function(afp){
-            app.resto.ardoiseOfDate.formulePriceList.add(afp);
-        });
+        this.formulePricehelper.addNewFormulePrice(e);
     },
-
-    initFormulePriceListFromRelation:function(){
-        var relationFPL = app.resto.ardoiseOfDate.relation("formulePriceList");
-        relationFPL.query().ascending("order").find({
-            success:function(formulePriceList){
-                app.resto.ardoiseOfDate.formulePriceList.add(formulePriceList);
-            }
-        })
+    showAddNewFormulePrice:function(e){
+        this.formulePricehelper.showAddNewFormulePrice(e);
     },
-
+    hideAddNewFormulePrice:function(e){
+        this.formulePricehelper.hideAddNewFormulePrice(e);
+    },
     addFormulePrice:function(ardoiseFormulePrice){
-        var ardoiseFormulePriceView = new ArdoiseFormulePriceView({model:ardoiseFormulePrice});
-        $("#zoneFormulePrice").append(ardoiseFormulePriceView.render().el);
+        this.formulePricehelper.addFormulePrice(ardoiseFormulePrice);
+
     },
 
+    /* Zone Dishes Bloc */
+    initDishesBlocListFromZero:function(callback){
+        this.dishesBlochelper.initDishesBlocListFromZero(callback);
+    },
+    initDishesBlocListFromRelation:function(){
+        this.dishesBlochelper.initDishesBlocListFromRelation();
+    },
+    addNewDishesBloc:function(e){
+        this.dishesBlochelper.addNewDishesBloc(e);
+    },
+    showAddNewDishesBloc:function(e){
+        this.dishesBlochelper.showAddNewDishesBloc(e);
+    },
+    hideAddNewDishesBloc:function(e){
+        this.dishesBlochelper.hideAddNewDishesBloc(e);
+    },
+    addDishesBloc:function(ardoiseDishesBloc){
+        this.dishesBlochelper.addDishesBloc(ardoiseDishesBloc);
+
+    },
+
+    /* zone ardoise */
     createNewArdoise: function(e){
 
         e.preventDefault();
@@ -95,15 +103,16 @@ app.ArdoiseView = Parse.View.extend({
                 that.render();
                 that.initFormulePriceListFromZero(
                     function(){
-                        that.saveArdoiseToBase("Vous venez de créer votre ardoise, modifiez la dés maintenant pour adapter la réalité de votre restaurant!");
+                        that.initDishesBlocListFromZero(
+                            function(){
+                                that.saveArdoiseToBase("Vous venez de créer votre ardoise, modifiez la dés maintenant pour adapter la réalité de votre restaurant!");
+                            }
+                        );
+
                     }
                 );
-
-
             }
-        })
-
-        var ardoise = app.resto.ardoiseOfDate;
+        });
     },
 
     searchArdoise:function(jsDateSelected, callback){
@@ -132,6 +141,7 @@ app.ArdoiseView = Parse.View.extend({
 
     },
     saveArdoiseToBase:function(msgToShow){
+
         var datejsForArdoise = moment($('#ardoiseDatepicker').val(), "DD/MM/YYYY").toDate();
         var ardoiseTitle = $("#ardoiseTitle").val();
 
@@ -141,27 +151,45 @@ app.ArdoiseView = Parse.View.extend({
         ardoise.set("date",datejsForArdoise);
         ardoise.set("title",ardoiseTitle);
 
-        this.updateFormulePriceList(this.options.modify,function(relationFPL){
-            app.resto.ardoiseOfDate.formulePriceList.forEach (function (fpl) {
-                if(!fpl.toBeRemoved){
-                    relationFPL.add(fpl);
-                }
-            });
-            ardoise.save().then(function(){
-                showMsg(0,msgToShow);
-            });
-        })
+        this.updateLists(this.options.modify,msgToShow);
     },
-    updateFormulePriceList:function(modify, callback){
+    updateLists:function(modify, msgToShow)
+    {
+
+        var self=this;
         var relationFPL = app.resto.ardoiseOfDate.relation("formulePriceList");
-        if(modify && app.resto.ardoiseOfDate.id){
-            relationFPL.query().find().then(function(results){
+        var relationDBL = app.resto.ardoiseOfDate.relation("dishesBlocList");
+
+        if(modify && app.resto.ardoiseOfDate.id){//on commence par netroyer
+            relationFPL.query().find().
+           then(function(results){
                 relationFPL.remove(results);
-                callback(relationFPL);
+                return Parse.Promise.as();
+            }).then(function(){
+
+                return relationDBL.query().find();
+             }).then(function(results){
+
+                    relationDBL.remove(results);
+                    return Parse.Promise.as();
+            }).then(function(){
+                self.saveArdoiseWithLists(relationFPL,relationDBL,msgToShow);
             });
         }else{
-            callback(relationFPL);
+            self.saveArdoiseWithLists(relationFPL,relationDBL, msgToShow);
         }
+    },
+    saveArdoiseWithLists:function(relationFPL,relationDBL, msgToShow){
+        app.resto.ardoiseOfDate.formulePriceList.forEach (function (model) {
+            if(!model.toBeRemoved){relationFPL.add(model);}
+        });
+        app.resto.ardoiseOfDate.dishesBlocList.forEach (function (model) {
+            if(!model.toBeRemoved){relationDBL.add(model);}
+        });
+        app.resto.ardoiseOfDate.save().then(function(){
+            showMsg(0,msgToShow);
+        })
     }
+
 
 });

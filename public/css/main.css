@@ -76,6 +76,7 @@ td.editing .priceedit{
     display: inline-block;
 }
 
+/* ardoise */
 #zoneFormulePrice .formulePriceLabel{
     display: inline-block;
 }
@@ -88,3 +89,47 @@ td.editing .priceedit{
 #zoneFormulePrice .editing .formulePriceLabelInput{
     display: inline-block;
 }
+
+.showAddFormulePrice .showAddFormulePriceBtn{
+    display: inline-block;
+}
+.showAddFormulePrice.editing .showAddFormulePriceBtn{
+    display: none;
+}
+.showAddFormulePrice .addFormulePriceZone{
+    display: none;
+}
+.showAddFormulePrice.editing .addFormulePriceZone{
+    display: inline-block;
+}
+
+/* dishes bloc */
+.dishesBlocLine.editing .dishesBlocLabel{
+    display:none;
+}
+.dishesBlocLine .dishesBlocLabelInput{
+    display:none;
+}
+.dishesBlocLine .dishesBlocLabel{
+    display:inline-block;
+}
+.dishesBlocLine.editing .dishesBlocLabelInput{
+    display:inline-block;
+}
+
+.showAddDishesBloc .showAddDishesBlocBtn{
+    display: inline-block;
+}
+.showAddDishesBloc.editing .showAddDishesBlocBtn{
+    display: none;
+}
+.showAddDishesBloc .addDishesBlocZone{
+    display: none;
+}
+.showAddDishesBloc.editing .addDishesBlocZone{
+    display: inline-block;
+}
+
+
+
+

@@ -17,7 +17,6 @@
             </div>
         </div>
     </div>
-
 </script>
 <script type="text/template" id="ardoise-template">
     {{if(modify){ }}
@@ -34,7 +33,29 @@
             </div>
             <div class="well" id="zoneFormulePrice">
                 <!-- c'est là où on saisit tous les formules avec le prix-->
-                <p><button class="addFormulePriceBtn"><i class="fa fa-plus"></i> Ajouter</button></p>
+                <p class="showAddFormulePrice">
+                    <button class="showAddFormulePriceBtn"><i class="fa fa-plus"></i></button>
+                    <span class="addFormulePriceZone">
+                    <i class="fa fa-trash fa-lg clear hideAddFormulePriceBtn"></i>
+                    <input type="text" value="" class="addFormulePriceLabelInput" />
+                    <input type="text" value="" class="addFormulePriceEuroInput" size="3"/>€
+                    <button class="addFormulePriceBtn">Ajouter</button>
+                    </span>
+                </p>
+            </div>
+            <div class="well" id="zoneDishesBlocs">
+                <!-- c'est là où on saisit tous les entrées, plats, et dessert-->
+                <p class="showAddDishesBloc"><button class="showAddDishesBlocBtn"><i class="fa fa-plus"></i></button>
+                 <span class="addDishesBlocZone">
+                    <i class="fa fa-trash fa-lg clear hideAddDishesBlocBtn"></i>
+                    <input type="text" value="" class="addDishesBlocLabelInput" />
+                    <button class="addDishesBlocBtn">Ajouter</button>
+                 </span>
+                </p>
+            </div>
+            <div class="well" id="zoneFreeWrite">
+                <!-- ceci est une zone de saisie libre-->
+
             </div>
         </form>
     </div>
@@ -58,3 +79,5 @@
    <input type="text" value="{{=priceEuro}}" maxlength="5" size="3" class="formulePriceInput" style="text-align:right;" >€
     </div>
 </script>
+
+<% include edit-ardoise/edit-ardoise-dish-bloc%>
