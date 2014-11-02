@@ -12,8 +12,16 @@
                 </div>
             </h3>
         </div>
-        <div class="panel-body">
+        <div class="panel-body {{=id}}">
 
+            <p class="showAddDish">
+                 <button class="showAddDishBtn"><i class="fa fa-plus"></i></button>
+                 <span class="addDishZone">
+                    <i class="fa fa-trash fa-lg hideAddDishBtn"></i>
+                    <input type="text" value="" class="addDishLabelInput" />
+                    <button class="addDishBtn">Ajouter</button>
+                 </span>
+            </p>
         </div>
     </div>
 </script>

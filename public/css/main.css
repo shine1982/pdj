@@ -130,6 +130,32 @@ td.editing .priceedit{
     display: inline-block;
 }
 
+/* ardoise dish */
+.dishLine.editing .dishLabel{
+    display:none;
+}
+.dishLine .dishLabelInput{
+    display:none;
+}
+.dishLine .dishLabel{
+    display:inline-block;
+}
+.dishLine.editing .dishLabelInput{
+    display:inline-block;
+}
+
+.showAddDish .showAddDishBtn{
+    display: inline-block;
+}
+.showAddDish.editing .showAddDishBtn{
+    display: none;
+}
+.showAddDish .addDishZone{
+    display: none;
+}
+.showAddDish.editing .addDishZone{
+    display: inline-block;
+}
 
 
 

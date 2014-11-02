@@ -5,11 +5,9 @@ app.ArdoiseDish = Parse.Object.extend({
     className:"ArdoiseDish",
 
     defaults: {
-        name: '',
+        label: '',
         priceEuro: '',
-        priceCentimes: '',
-        order: 1,
-        dishType: 1
+        order: 1
     }
 
 });

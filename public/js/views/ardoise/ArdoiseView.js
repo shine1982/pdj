@@ -18,16 +18,13 @@ app.ArdoiseView = Parse.View.extend({
         "click .showAddDishesBlocBtn":"showAddNewDishesBloc",
         "click .hideAddDishesBlocBtn":"hideAddNewDishesBloc",
         "click .addDishesBlocBtn":"addNewDishesBloc"
-
-        //dishes
-
-
     },
 
     initialize: function() {
-        _.bindAll(this,"saveArdoise","createNewArdoise",
+        _.bindAll(this,"saveArdoise","createNewArdoise","searchArdoise","updateLists","saveArdoiseToBase","saveArdoiseWithLists",
             "addNewFormulePrice","showAddNewFormulePrice","hideAddNewFormulePrice","addFormulePrice",
-            "addNewDishesBloc","showAddNewDishesBloc","hideAddNewDishesBloc","addDishesBloc");
+            "addNewDishesBloc","showAddNewDishesBloc","hideAddNewDishesBloc","addDishesBloc",
+            "addDish");
 
         this.render();
 
@@ -36,13 +33,16 @@ app.ArdoiseView = Parse.View.extend({
 
         app.resto.ardoiseOfDate.formulePriceList = new app.ArdoiseFormulePriceList();
         app.resto.ardoiseOfDate.dishesBlocList = new app.ArdoiseDishesBlocList();
+        app.resto.ardoiseOfDate.dishList = new app.ArdoiseDishList();
         app.resto.ardoiseOfDate.formulePriceList.on('add', this.addFormulePrice);
         app.resto.ardoiseOfDate.dishesBlocList.on('add',this.addDishesBloc);
-
+        app.resto.ardoiseOfDate.dishList.on('add',this.addDish);
         if(this.options.modify){
             this.initFormulePriceListFromRelation();
-            this.initDishesBlocListFromRelation();
+            this.initDishListFromRelation();//y compris dishesBloc
         }
+
+
     },
 
     render: function() {
@@ -75,9 +75,6 @@ app.ArdoiseView = Parse.View.extend({
     initDishesBlocListFromZero:function(callback){
         this.dishesBlochelper.initDishesBlocListFromZero(callback);
     },
-    initDishesBlocListFromRelation:function(){
-        this.dishesBlochelper.initDishesBlocListFromRelation();
-    },
     addNewDishesBloc:function(e){
         this.dishesBlochelper.addNewDishesBloc(e);
     },
@@ -90,6 +87,27 @@ app.ArdoiseView = Parse.View.extend({
     addDishesBloc:function(ardoiseDishesBloc){
         this.dishesBlochelper.addDishesBloc(ardoiseDishesBloc);
 
+    },
+
+    /* Zone dish */
+    initDishListFromRelation:function(){
+        var relationDBL = app.resto.ardoiseOfDate.relation("dishesBlocList");
+        relationDBL.query().ascending("order").find().then(function(results){
+            app.resto.ardoiseOfDate.dishesBlocList.add(results);
+            return Parse.Promise.as();
+        }).then(function(){
+            var relationDL = app.resto.ardoiseOfDate.relation("dishList");
+
+            relationDL.query().ascending("order").find({
+                success:function(dishList){
+                    app.resto.ardoiseOfDate.dishList.add(dishList);
+                }
+            })
+        })
+    },
+    addDish:function(dish){
+        var ardoiseDishView = new app.ArdoiseDishView({model:dish});
+        $("#zoneDishesBlocs ."+dish.get("idDishesBloc")+" .showAddDishBtn").before(ardoiseDishView.render().el);
     },
 
     /* zone ardoise */
@@ -116,6 +134,7 @@ app.ArdoiseView = Parse.View.extend({
                 );
             }
         });
+
     },
 
     searchArdoise:function(jsDateSelected, callback){
@@ -162,33 +181,45 @@ app.ArdoiseView = Parse.View.extend({
         var self=this;
         var relationFPL = app.resto.ardoiseOfDate.relation("formulePriceList");
         var relationDBL = app.resto.ardoiseOfDate.relation("dishesBlocList");
+        var relationDL = app.resto.ardoiseOfDate.relation("dishList");
 
         if(modify && app.resto.ardoiseOfDate.id){//on commence par netroyer
             relationFPL.query().find().
-           then(function(results){
+            then(function(results){
                 relationFPL.remove(results);
                 return Parse.Promise.as();
             }).then(function(){
-
                 return relationDBL.query().find();
              }).then(function(results){
-
                     relationDBL.remove(results);
                     return Parse.Promise.as();
             }).then(function(){
-                self.saveArdoiseWithLists(relationFPL,relationDBL,msgToShow);
+                    return relationDL.query().find();
+                }).then(function(results){
+                    relationDL.remove(results);
+                    return Parse.Promise.as();
+            }).then(function(){
+                self.saveArdoiseWithLists(relationFPL,relationDBL,relationDL, msgToShow);
             });
         }else{
-            self.saveArdoiseWithLists(relationFPL,relationDBL, msgToShow);
+            self.saveArdoiseWithLists(relationFPL,relationDBL,relationDL, msgToShow);
         }
     },
-    saveArdoiseWithLists:function(relationFPL,relationDBL, msgToShow){
+    saveArdoiseWithLists:function(relationFPL,relationDBL,relationDL, msgToShow){
+
         app.resto.ardoiseOfDate.formulePriceList.forEach (function (model) {
             if(!model.toBeRemoved){relationFPL.add(model);}
         });
+
         app.resto.ardoiseOfDate.dishesBlocList.forEach (function (model) {
             if(!model.toBeRemoved){relationDBL.add(model);}
         });
+
+        app.resto.ardoiseOfDate.dishList.forEach (function (model) {
+            if(!model.toBeRemoved){relationDL.add(model);}
+        });
+
+
         app.resto.ardoiseOfDate.save().then(function(){
             showMsg(0,msgToShow);
         })

@@ -1,0 +1,10 @@
+<script type="text/template" id="ardoise-formule-price-template">
+    <div class="formulePriceLine">
+        {{ if(order>3){ }}
+        <i class="fa fa-trash fa-lg clear"></i>
+        {{ } }}
+        <label class="formulePriceLabel">{{=label}}</label>
+        <input class="formulePriceLabelInput" value="{{=label}}"/>
+        <input type="text" value="{{=priceEuro}}" maxlength="5" size="3" class="formulePriceInput" style="text-align:right;" >€
+    </div>
+</script>

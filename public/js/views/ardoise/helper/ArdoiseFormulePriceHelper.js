@@ -4,7 +4,6 @@ function ArdoiseFormulePriceHelper(context){
 
     this.initFormulePriceListFromZero=function(callback){
 
-        var that = this.ctx;
         var queryArdoiseFormulePrice = new Parse.Query(app.ArdoiseFormulePrice);
         queryArdoiseFormulePrice.ascending("order");
         queryArdoiseFormulePrice.equalTo("resto",app.resto);
@@ -12,15 +11,30 @@ function ArdoiseFormulePriceHelper(context){
         queryArdoiseFormulePrice.find().then(function(list){
             if(list.length === 0){
                 var labelArrays = ["plat","entree + plat ou plat + dessert", "entree + plat + dessert"];
-                for(var i=0; i<labelArrays.length; i++){
-                    that.newFormulePrice(labelArrays[i],'',function(afp){
+
+                Parse.Promise.as().then(function() {
+
+                    var promises = [];
+                    var order=1;
+                    _.each(labelArrays, function(label) {
+                        var afp = new app.ArdoiseFormulePrice();
+                        afp.set("label",label);
+                        afp.set("resto",app.resto);
+                        afp.set("order",order);
+                        order++;
                         app.resto.ardoiseOfDate.formulePriceList.add(afp);
-                    })
-                }
+                        promises.push(afp.save());
+                    });
+                    return Parse.Promise.when(promises);
+
+                }).then(function() {
+                  callback();
+                });
             }else{
                 app.resto.ardoiseOfDate.formulePriceList.add(list);
+                callback();
             }
-            callback();
+
         })
     };
 
@@ -33,7 +47,7 @@ function ArdoiseFormulePriceHelper(context){
             }
         })
     }
-    this.newFormulePrice=function(label,price,callback){
+    this.newFormulePrice=function(label, price, order, callback){
         this.searchFormulePrice(label,
             function(afp){
                 callback(afp);
@@ -45,7 +59,7 @@ function ArdoiseFormulePriceHelper(context){
                     afp.set("priceEuro",price);
                 }
                 afp.set("resto",app.resto);
-                afp.set("order",app.resto.ardoiseOfDate.formulePriceList.getNextOrder());
+                afp.set("order",order);
                 afp.save().then(
                     function(afp){
                         callback(afp);
@@ -59,7 +73,7 @@ function ArdoiseFormulePriceHelper(context){
         var label = this.ctx.$(".addFormulePriceLabelInput").val();
         var that = this;
         if(label!==''){
-            this.newFormulePrice(label,that.ctx.$(".addFormulePriceEuroInput").val(),function(afp){
+            this.newFormulePrice(label,that.ctx.$(".addFormulePriceEuroInput").val(),app.resto.ardoiseOfDate.formulePriceList.getNextOrder(), function(afp){
                 app.resto.ardoiseOfDate.formulePriceList.add(afp);
                 that.ctx.$(".addFormulePriceLabelInput").val('');
                 that.ctx.$(".addFormulePriceEuroInput").val('');

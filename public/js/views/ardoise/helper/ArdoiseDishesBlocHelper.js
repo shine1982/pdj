@@ -4,7 +4,6 @@ function ArdoiseDishesBlocHelper(context){
 
     this.initDishesBlocListFromZero=function(callback){
 
-        var that = this.ctx;
         var queryArdoiseDishesBloc = new Parse.Query(app.ArdoiseDishesBloc);
         queryArdoiseDishesBloc.ascending("order");
         queryArdoiseDishesBloc.equalTo("resto",app.resto);
@@ -12,28 +11,32 @@ function ArdoiseDishesBlocHelper(context){
         queryArdoiseDishesBloc.find().then(function(list){
             if(list.length === 0){
                 var labelArrays = ["Entrées","Plats", "Desserts"];
-                for(var i=0; i<labelArrays.length; i++){
-                    that.newDishesBloc(labelArrays[i],'',function(df){
-                        app.resto.ardoiseOfDate.dishesBlocList.add(df);
-                    })
-                }
+                Parse.Promise.as().then(function() {
+
+                    var promises = [];
+                    var order=1;
+                    _.each(labelArrays, function(label) {
+                        var db = new app.ArdoiseDishesBloc();
+                        db.set("label",label);
+                        db.set("resto",app.resto);
+                        db.set("order",order);
+                        order++;
+                        app.resto.ardoiseOfDate.dishesBlocList.add(db);
+                        promises.push(db.save());
+                    });
+                    return Parse.Promise.when(promises);
+
+                }).then(function() {
+                    callback();
+                });
             }else{
                 app.resto.ardoiseOfDate.dishesBlocList.add(list);
+                callback();
             }
-            callback();
+
         })
     };
-
-    this.initDishesBlocListFromRelation=function(){
-
-        var relationDF = app.resto.ardoiseOfDate.relation("dishesBlocList");
-        relationDF.query().ascending("order").find({
-            success:function(dishesBlocList){
-                app.resto.ardoiseOfDate.dishesBlocList.add(dishesBlocList);
-            }
-        })
-    }
-    this.newDishesBloc=function(label,price,callback){
+    this.newDishesBloc=function(label,price,order,callback){
         this.searchDishesBloc(label,
             function(df){
                 callback(df);
@@ -45,7 +48,7 @@ function ArdoiseDishesBlocHelper(context){
                     df.set("priceEuro",price);
                 }
                 df.set("resto",app.resto);
-                df.set("order",app.resto.ardoiseOfDate.dishesBlocList.getNextOrder());
+                df.set("order",order);
                 df.save().then(
                     function(df){
                         callback(df);
@@ -59,7 +62,7 @@ function ArdoiseDishesBlocHelper(context){
         var label = this.ctx.$(".addDishesBlocLabelInput").val();
         var that = this;
         if(label!==''){
-            that.newDishesBloc(label,that.ctx.$(".addDishesBlocPriceEuroInput").val(),function(df){
+            that.newDishesBloc(label,that.ctx.$(".addDishesBlocPriceEuroInput").val(),app.resto.ardoiseOfDate.dishesBlocList.getNextOrder(),function(df){
                 app.resto.ardoiseOfDate.dishesBlocList.add(df);
                 that.ctx.$(".addDishesBlocLabelInput").val('');
                 that.ctx.$(".addDishesBlocPriceEuroInput").val('');
@@ -70,11 +73,11 @@ function ArdoiseDishesBlocHelper(context){
     };
     this.showAddNewDishesBloc=function(e){
         e.preventDefault();
-        $(".showAddDishesBloc").addClass("editing");
+        this.ctx.$(".showAddDishesBloc").addClass("editing");
     };
     this.hideAddNewDishesBloc=function(e){
         e.preventDefault();
-        $(".showAddDishesBloc").removeClass("editing");
+        this.ctx.$(".showAddDishesBloc").removeClass("editing");
     };
     this.addDishesBloc=function(ardoiseDishesBloc){
         var ardoiseDishesBlocView = new app.ArdoiseDishesBlocView({model:ardoiseDishesBloc});

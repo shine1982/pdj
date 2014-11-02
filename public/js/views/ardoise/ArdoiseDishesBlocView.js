@@ -10,17 +10,29 @@ app.ArdoiseDishesBlocView = Parse.View.extend({
        "click .clear":"removeItem",
        "blur .dishesBlocPriceInput":"setPrice",
        "click .dishesBlocLabel": "startEditingMode",
-       "blur .dishesBlocLabelInput": "endEditingMode"
+       "blur .dishesBlocLabelInput": "endEditingMode",
 
+        //dish
+        "click .showAddDishBtn":"showAddNewDish",
+        "click .hideAddDishBtn":"hideAddNewDish",
+        "click .addDishBtn":"addNewDish"
     },
     initialize: function() {
-        _.bindAll(this,"render","removeItem");
+        _.bindAll(this,"render","removeItem","showAddNewDish","hideAddNewDish","addNewDish");
+
+        this.dishHelper = new ArdoiseDishHelper(this);
         this.model.toBeRemoved = false;
         this.model.bind('change', this.render);
     },
 
     removeItem:function(item){
         this.model.toBeRemoved = true;
+        app.resto.ardoiseOfDate.dishList.
+            dishesOfIdDishesBloc((this.model.id)).forEach(
+            function(dish){
+                dish.toBeRemoved = true;
+            }
+        );
         this.remove();
     },
     setPrice:function(e){
@@ -48,5 +60,15 @@ app.ArdoiseDishesBlocView = Parse.View.extend({
         }
         this.$el.html( this.template(_.extend(this.model.attributes, {id:this.model.id},{theme:theme})));
         return this;
+    },
+
+    showAddNewDish:function(e){
+        this.dishHelper.showAddNewDish(e);
+    },
+    hideAddNewDish:function(e){
+        this.dishHelper.hideAddNewDish(e);
+    },
+    addNewDish:function(e){
+        this.dishHelper.addNewDish(e,this.model.id);
     }
 });
