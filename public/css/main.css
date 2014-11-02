@@ -157,5 +157,19 @@ td.editing .priceedit{
     display: inline-block;
 }
 
+/* text */
+.textLine.editing .textLabel{
+    display:none;
+}
+.textLine .textLabelInput{
+    display:none;
+}
+.textLine .textLabel{
+    display:inline-block;
+}
+.textLine.editing .textLabelInput{
+    display:inline-block;
+}
+
 
 

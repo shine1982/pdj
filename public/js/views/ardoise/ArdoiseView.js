@@ -17,32 +17,38 @@ app.ArdoiseView = Parse.View.extend({
         //dishes bloc
         "click .showAddDishesBlocBtn":"showAddNewDishesBloc",
         "click .hideAddDishesBlocBtn":"hideAddNewDishesBloc",
-        "click .addDishesBlocBtn":"addNewDishesBloc"
+        "click .addDishesBlocBtn":"addNewDishesBloc",
+
+        //text
+        "click .addTextBtn":"addNewText"
     },
 
     initialize: function() {
         _.bindAll(this,"saveArdoise","createNewArdoise","searchArdoise","updateLists","saveArdoiseToBase","saveArdoiseWithLists",
             "addNewFormulePrice","showAddNewFormulePrice","hideAddNewFormulePrice","addFormulePrice",
             "addNewDishesBloc","showAddNewDishesBloc","hideAddNewDishesBloc","addDishesBloc",
-            "addDish");
+            "addDish",
+            "addText");
 
         this.render();
 
         this.formulePricehelper = new ArdoiseFormulePriceHelper(this);
         this.dishesBlochelper = new ArdoiseDishesBlocHelper(this);
+        this.texthelper = new ArdoiseTextHelper(this);
 
         app.resto.ardoiseOfDate.formulePriceList = new app.ArdoiseFormulePriceList();
         app.resto.ardoiseOfDate.dishesBlocList = new app.ArdoiseDishesBlocList();
         app.resto.ardoiseOfDate.dishList = new app.ArdoiseDishList();
+        app.resto.ardoiseOfDate.textList = new app.ArdoiseTextList();
         app.resto.ardoiseOfDate.formulePriceList.on('add', this.addFormulePrice);
         app.resto.ardoiseOfDate.dishesBlocList.on('add',this.addDishesBloc);
         app.resto.ardoiseOfDate.dishList.on('add',this.addDish);
+        app.resto.ardoiseOfDate.textList.on('add',this.addText);
         if(this.options.modify){
             this.initFormulePriceListFromRelation();
             this.initDishListFromRelation();//y compris dishesBloc
+            this.initTextListFromRelation();
         }
-
-
     },
 
     render: function() {
@@ -108,6 +114,17 @@ app.ArdoiseView = Parse.View.extend({
     addDish:function(dish){
         var ardoiseDishView = new app.ArdoiseDishView({model:dish});
         $("#zoneDishesBlocs ."+dish.get("idDishesBloc")+" .showAddDishBtn").before(ardoiseDishView.render().el);
+    },
+    /* zone text */
+    initTextListFromRelation:function(){
+        this.texthelper.initTextListFromRelation();
+    },
+    addText:function(text){
+        this.texthelper.addText(text);
+
+    },
+    addNewText:function(e){
+        this.texthelper.addNewText(e);
     },
 
     /* zone ardoise */
@@ -182,6 +199,7 @@ app.ArdoiseView = Parse.View.extend({
         var relationFPL = app.resto.ardoiseOfDate.relation("formulePriceList");
         var relationDBL = app.resto.ardoiseOfDate.relation("dishesBlocList");
         var relationDL = app.resto.ardoiseOfDate.relation("dishList");
+        var relationTL = app.resto.ardoiseOfDate.relation("textList");
 
         if(modify && app.resto.ardoiseOfDate.id){//on commence par netroyer
             relationFPL.query().find().
@@ -199,13 +217,18 @@ app.ArdoiseView = Parse.View.extend({
                     relationDL.remove(results);
                     return Parse.Promise.as();
             }).then(function(){
-                self.saveArdoiseWithLists(relationFPL,relationDBL,relationDL, msgToShow);
+                return relationTL.query().find();
+            }).then(function(results){
+                relationTL.remove(results);
+                return Parse.Promise.as();
+            }).then(function(){
+                self.saveArdoiseWithLists(relationFPL, relationDBL, relationDL, relationTL, msgToShow);
             });
         }else{
-            self.saveArdoiseWithLists(relationFPL,relationDBL,relationDL, msgToShow);
+            self.saveArdoiseWithLists(relationFPL, relationDBL, relationDL, relationTL, msgToShow);
         }
     },
-    saveArdoiseWithLists:function(relationFPL,relationDBL,relationDL, msgToShow){
+    saveArdoiseWithLists:function(relationFPL,relationDBL,relationDL,relationTL, msgToShow){
 
         app.resto.ardoiseOfDate.formulePriceList.forEach (function (model) {
             if(!model.toBeRemoved){relationFPL.add(model);}
@@ -219,6 +242,9 @@ app.ArdoiseView = Parse.View.extend({
             if(!model.toBeRemoved){relationDL.add(model);}
         });
 
+        app.resto.ardoiseOfDate.textList.forEach (function (model) {
+            if(!model.toBeRemoved){relationTL.add(model);}
+        });
 
         app.resto.ardoiseOfDate.save().then(function(){
             showMsg(0,msgToShow);
