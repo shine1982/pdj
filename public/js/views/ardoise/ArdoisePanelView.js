@@ -8,11 +8,11 @@ app.ArdoisePanelView = Parse.View.extend({
 
 
     events: {
-
+        "click #visuArdoiseBtn":"showArdoiseVisuModal"
     },
 
     initialize: function(id) {
-
+        _.bindAll(this,"showArdoiseVisuModal");
         this.render();
         this.init3rdBootstrapComponent();
         this.on("dateArdoiseChange", this.ardoiseDateChange);
@@ -88,5 +88,18 @@ app.ArdoisePanelView = Parse.View.extend({
     render: function() {
         this.$el.html( this.template());
         return this;
+    },
+
+    showArdoiseVisuModal:function(e){
+        e.preventDefault();
+        if(this.visuArdoiseView){
+            this.visuArdoiseView.remove();
+        }
+        this.visuArdoiseView = new app.ArdoiseVisuView();
+        $("#visuArdoisePlaceHolder").html(this.visuArdoiseView.render().el);
+        this.visuArdoiseView.renderDishes();
+        $("#visuArdoiseModal").modal("show");
     }
+
+
 });

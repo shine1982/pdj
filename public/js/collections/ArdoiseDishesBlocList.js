@@ -12,6 +12,12 @@ app.ArdoiseDishesBlocList = Parse.Collection.extend({
     },
     comparator: function( model ) {
         return model.get('order');
+    },
+
+    hasDishesList:function(listDishes){
+        return this.filter(function(dishesBloc){
+            return listDishes.dishesOfIdDishesBloc(dishesBloc.id).length>0 && !dishesBloc.toBeRemoved;
+        })
     }
 
 });

@@ -1,0 +1,30 @@
+<script type="text/template" id="ardoise-visu-template">
+    <div class="modal fade" id="visuArdoiseModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="visuTitleMenu text-center">{{=it.titleArdoise}}</p>
+                   {{~it.formulePriceList :value:index}}
+                       <p>{{=value.get("label")}} {{=value.get("priceEuro")}} €</p>
+                   {{~}}
+                   {{~it.dishesBlocList :value:index}}
+                    <div class="{{=value.id}}">
+                        <h5 class="visuDishesBlocTitle">{{=value.get("label")}}
+                            <div class="pull-right">
+                                {{=value.get("priceEuro")!=""?(value.get("priceEuro")+' €'):''}}
+                            </div>
+                        </h5>
+                    </div>
+                    {{~}}
+
+                    {{~it.textList :value:index}}
+                    <p>{{=value.get("label")}}</p>
+                    {{~}}
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</script>
+
+<div id="visuArdoisePlaceHolder"></div>

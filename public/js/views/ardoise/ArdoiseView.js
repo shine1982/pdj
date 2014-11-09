@@ -204,22 +204,26 @@ app.ArdoiseView = Parse.View.extend({
         if(modify && app.resto.ardoiseOfDate.id){//on commence par netroyer
             relationFPL.query().find().
             then(function(results){
+                if(results!=null && results.length>0)
                 relationFPL.remove(results);
                 return Parse.Promise.as();
             }).then(function(){
                 return relationDBL.query().find();
              }).then(function(results){
-                    relationDBL.remove(results);
+                    if(results!=null && results.length>0)
+                        relationDBL.remove(results);
                     return Parse.Promise.as();
             }).then(function(){
                     return relationDL.query().find();
                 }).then(function(results){
-                    relationDL.remove(results);
+                    if(results!=null && results.length>0)
+                        relationDL.remove(results);
                     return Parse.Promise.as();
             }).then(function(){
                 return relationTL.query().find();
             }).then(function(results){
-                relationTL.remove(results);
+                    if(results!=null && results.length>0)
+                        relationTL.remove(results);
                 return Parse.Promise.as();
             }).then(function(){
                 self.saveArdoiseWithLists(relationFPL, relationDBL, relationDL, relationTL, msgToShow);

@@ -15,7 +15,12 @@ app.ArdoiseDishList = Parse.Collection.extend({
     },
     dishesOfIdDishesBloc: function (idDishesBloc) {
         return this.filter(function(dish){
-            return dish.get("idDishesBloc")===idDishesBloc;
+            return dish.get("idDishesBloc")===idDishesBloc && !dish.toBeRemoved;
+        })
+    },
+    notToBeRemovedList:function(){
+        return this.filter(function(dish){
+            return !dish.toBeRemoved;
         })
     }
 

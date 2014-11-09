@@ -12,6 +12,12 @@ app.ArdoiseFormulePriceList = Parse.Collection.extend({
     },
     comparator: function( model ) {
         return model.get('order');
+    },
+
+    withPriceList:function(){
+        return this.filter(function(formulePrice){
+           return formulePrice.get("priceEuro")!="" && !formulePrice.toBeRemoved;
+        });
     }
 
 });

@@ -171,5 +171,19 @@ td.editing .priceedit{
     display:inline-block;
 }
 
+#visuArdoiseModal .modal-content{
+    font-family: "Comic Sans", "Comic Sans MS", cursive;
+    border-style: groove;
+    border-color:#FFCC00;
+    border-width:10px;
+    background-color: #000000;
+    color: white;
+}
 
+.visuTitleMenu{
+    text-decoration: underline;
+}
 
+h5.visuDishesBlocTitle{
+    text-decoration: underline;
+}
