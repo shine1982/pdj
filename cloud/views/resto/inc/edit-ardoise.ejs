@@ -19,6 +19,28 @@
     </div>
 </script>
 <script type="text/template" id="ardoise-template">
+    <div class="modal fade"  role="dialog" id="importArdoiseModal" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h4 class="modal-title">Importer l'ardoise du
+                        <input type="text" class="span1" data-date-format="dd/mm/yyyy" id="tobeImportedArdoiseDate" size="16" style="color:darkgray;" readonly>
+                        <button class="btn btn-success" id="importArdoiseConfirm">OK</button>
+                    </h4>
+
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">
+                        <button type="button" class="btn btn-info" id="btnPreviousArdoise"><i class="fa fa-chevron-left"></i></button>
+                        <button type="button" class="btn btn-info" id="btnNextArdoise"><i class="fa fa-chevron-right"></i></button>
+                    </p>
+                    <p class="text-center" id="showImportArdoise"><i class="fa fa-refresh fa-spin"></i></p>
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     {{if(modify){ }}
     <div id="ardoiseHeaderZone">
 
@@ -66,7 +88,7 @@
         <p>Appuyer ce button <button class="btnCreateArdoise btn btn-success btn-lg">Créer</button> pour créer votre permière ardoise!</p>
     {{ }else{ }}
         <p>Vous n'avez pas encore créé une ardoise pour cette date. Vous pouvez</p>
-        <p>Appuyer ce button <button class="btn btn-success btn-lg">Importer</button> pour créer une ardoise en important l'ardoise d'une autre date</p>
+        <p>Appuyer ce button <button class="btn btn-success btn-lg" id="btnImportArdoise">Importer</button> pour créer une ardoise en important l'ardoise d'une autre date</p>
         <p>ou</p>
         <p>Appuyer ce button <button class="btnCreateArdoise btn btn-success">Créer</button> pour créer une ardoise à partir de zero</p>
     {{ } }}
@@ -77,3 +99,4 @@
 <% include edit-ardoise/edit-ardoise-dish%>
 <% include edit-ardoise/edit-ardoise-text%>
 <% include edit-ardoise/visu-ardoise-modal%>
+<% include edit-ardoise/edit-ardoise-import-ardoise-visu-for-modal%>

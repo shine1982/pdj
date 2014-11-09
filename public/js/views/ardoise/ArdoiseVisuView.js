@@ -30,7 +30,6 @@ app.ArdoiseVisuView = Parse.View.extend({
             var dish = dlist[i];
             var priceToShow="";
             if(dish.get("priceEuro")!=""){
-                //priceToShow = "<div class='pull-right'>"+dish.get("priceEuro")+" €</div>";
                 priceToShow = "  " + dish.get('priceEuro')+" €";
             }
             $("#visuArdoiseModal ."+dish.get("idDishesBloc")).append("<p>"+dish.get("label")+priceToShow+"</p>");

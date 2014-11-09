@@ -6,7 +6,6 @@ app.ArdoisePanelView = Parse.View.extend({
 
     template: _.template($('#ardoise-panel-template').html()),
 
-
     events: {
         "click #visuArdoiseBtn":"showArdoiseVisuModal"
     },
@@ -77,7 +76,7 @@ app.ArdoisePanelView = Parse.View.extend({
 
     init3rdBootstrapComponent:function(){
         var that = this;
-        $('#ardoiseDatepicker').datepicker('setValue', new Date()).on('changeDate',
+        $('#ardoiseDatepicker').datepicker('setValue',moment(new Date()).format("DD/MM/YYYY")).on('changeDate',
             function(ev){
                 $('#ardoiseDatepicker').datepicker('hide');
                 that.trigger("dateArdoiseChange");

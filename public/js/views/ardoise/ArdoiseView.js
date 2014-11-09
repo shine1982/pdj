@@ -4,10 +4,20 @@ app.ArdoiseView = Parse.View.extend({
 
     template: _.template($('#ardoise-template').html()),
 
+    importVisuTempl: doT.template($('#ardoise-import-visu-template').html()),
+
+    tempArdoises:null,
+
     events: {
         //ardoise
         "click #saveArdoiseBtn":'saveArdoise',
         "click .btnCreateArdoise":'createNewArdoise',
+
+        //import ardoise
+        "click #btnImportArdoise":'showImportArdoiseModal',
+        "click #btnPreviousArdoise":'previousArdoise',
+        "click #btnNextArdoise":'nextArdoise',
+        "click #importArdoiseConfirm":'importArdoise',
 
         //formule price
         "click .showAddFormulePriceBtn":"showAddNewFormulePrice",
@@ -28,7 +38,8 @@ app.ArdoiseView = Parse.View.extend({
             "addNewFormulePrice","showAddNewFormulePrice","hideAddNewFormulePrice","addFormulePrice",
             "addNewDishesBloc","showAddNewDishesBloc","hideAddNewDishesBloc","addDishesBloc",
             "addDish",
-            "addText");
+            "addText",
+        "showImportArdoiseModal","renderImportArodoise","previousArdoise","nextArdoise","importArdoise");
 
         this.render();
 
@@ -44,6 +55,10 @@ app.ArdoiseView = Parse.View.extend({
         app.resto.ardoiseOfDate.dishesBlocList.on('add',this.addDishesBloc);
         app.resto.ardoiseOfDate.dishList.on('add',this.addDish);
         app.resto.ardoiseOfDate.textList.on('add',this.addText);
+        this.initLists();
+    },
+
+    initLists:function(){
         if(this.options.modify){
             this.initFormulePriceListFromRelation();
             this.initDishListFromRelation();//y compris dishesBloc
@@ -131,7 +146,7 @@ app.ArdoiseView = Parse.View.extend({
     createNewArdoise: function(e){
 
         e.preventDefault();
-        var datejsForArdoise = moment($('#ardoiseDatepicker').val(), "DD/MM/YYYY").toDate();
+        var datejsForArdoise = this.getActuelDate();
         var that = this;
         this.searchArdoise(datejsForArdoise, function(hasAlreadyArdoise){
             if(hasAlreadyArdoise){
@@ -179,9 +194,14 @@ app.ArdoiseView = Parse.View.extend({
         this.saveArdoiseToBase("L'ardoise a été sauvegardé pour la date "+ $('#ardoiseDatepicker').val());
 
     },
+
+    getActuelDate:function(){
+        return moment($('#ardoiseDatepicker').val(), "DD/MM/YYYY").toDate();
+    },
+
     saveArdoiseToBase:function(msgToShow){
 
-        var datejsForArdoise = moment($('#ardoiseDatepicker').val(), "DD/MM/YYYY").toDate();
+        var datejsForArdoise = this.getActuelDate();
         var ardoiseTitle = $("#ardoiseTitle").val();
 
         var ardoise = app.resto.ardoiseOfDate;
@@ -253,7 +273,121 @@ app.ArdoiseView = Parse.View.extend({
         app.resto.ardoiseOfDate.save().then(function(){
             showMsg(0,msgToShow);
         })
+    },
+
+    showImportArdoiseModal:function(e){
+        e.preventDefault();
+        var self=this;
+        $("#importArdoiseModal").modal("show");
+
+        var queryArdoise = new Parse.Query(app.Ardoise);
+        queryArdoise.descending("date");
+        queryArdoise.equalTo("resto",app.resto);
+        queryArdoise.limit(20);
+        queryArdoise.find().then(function(ardoises){
+            if(ardoises.length>0){
+                self.tempArdoises=ardoises;
+                self.renderImportArodoise(ardoises);
+
+
+            }else{
+                $("#showArdoiseWaiting").html("No ardoise trouvé!");
+            }
+        })
+    },
+    renderImportArodoise:function(ardoises){
+        var self = this;
+        if(!app.resto.importVisuArdoiseIndex){
+            app.resto.importVisuArdoiseIndex=0;
+        }
+        var ardoise = ardoises[app.resto.importVisuArdoiseIndex];
+        var datejs = ardoise.get("date");
+        var dateToShow = moment(datejs).format("DD/MM/YYYY");
+        $("#tobeImportedArdoiseDate").datepicker('setValue', dateToShow);
+        self.tempFormulePriceList = new app.ArdoiseFormulePriceList();
+        self.tempDishesBlocList = new app.ArdoiseDishesBlocList();
+        self.tempDishList = new app.ArdoiseDishList();
+        self.tempTextList = new app.ArdoiseTextList();
+        ardoise.relation("formulePriceList").query().find().then(
+            function(results){
+                self.tempFormulePriceList.add(results);
+                return ardoise.relation("dishesBlocList").query().find();
+        }).then(function(results){
+                self.tempDishesBlocList.add(results);
+                return ardoise.relation("textList").query().find();
+        }).then(function(results){
+                self.tempTextList.add(results);
+                return ardoise.relation("dishList").query().find();
+        }).then(function(results){
+                self.tempDishList.add(results);
+                return Parse.Promise.as();
+         }).then(function(){
+                $("#showImportArdoise").html(
+                    self.importVisuTempl(
+                        {titleArdoise:ardoise.get("title"),
+                            formulePriceList:self.tempFormulePriceList.withPriceList(),
+                            dishesBlocList: self.tempDishesBlocList.hasDishesList(self.tempDishList),
+                            textList:self.tempTextList.notToBeRemovedList()})
+                );
+
+                for(var i=0; i<self.tempDishList.toArray().length; i++){
+                    var dish = self.tempDishList.toArray()[i];
+                    var priceToShow="";
+                    if(dish.get("priceEuro")!=""){
+                        priceToShow = "  " + dish.get('priceEuro')+" €";
+                    }
+                    $(".ardoiseVisu ."+dish.get("idDishesBloc")).append("<p>"+dish.get("label")+priceToShow+"</p>");
+                }
+         })
+        //les deux buttons < >
+        $("#btnNextArdoise").show();
+        $("#btnPreviousArdoise").show();
+        if(app.resto.importVisuArdoiseIndex === 0){
+            $("#btnNextArdoise").hide();
+        }
+        if(app.resto.importVisuArdoiseIndex == ardoises.length -1){
+            $("#btnPreviousArdoise").hide();
+        }
+    },
+    previousArdoise: function (e) {
+        e.preventDefault();
+        if(app.resto.importVisuArdoiseIndex<this.tempArdoises.length-1){
+            app.resto.importVisuArdoiseIndex++;
+            this.renderImportArodoise(this.tempArdoises);
+        }
+    },
+    nextArdoise:function(e){
+        e.preventDefault();
+        if(app.resto.importVisuArdoiseIndex>0){
+            app.resto.importVisuArdoiseIndex--;
+            this.renderImportArodoise(this.tempArdoises);
+        }
+    },
+
+    importArdoise:function(e){
+        e.preventDefault();
+        var self= this;
+        if(self.tempArdoises!=null && self.tempArdoises.length>0){
+            var ardoiseAImporter = self.tempArdoises[app.resto.importVisuArdoiseIndex];
+            var newArdoise = ardoiseAImporter.clone();
+            newArdoise.set("date", this.getActuelDate());
+            newArdoise.save().then(function(ardoise){
+                app.resto.ardoiseOfDate = ardoise;
+                $("#importArdoiseModal").modal("hide");
+                self.options.modify=true;
+                app.resto.ardoiseOfDate.formulePriceList = self.tempFormulePriceList;
+                app.resto.ardoiseOfDate.dishesBlocList = self.tempDishesBlocList;
+                app.resto.ardoiseOfDate.dishList = self.tempDishList;
+                app.resto.ardoiseOfDate.textList = self.tempTextList;
+
+                var refresh="<button onclick='location.reload()'>Rafraichir</button>"
+                self.saveArdoiseToBase("L'ardoise a été créé avec l'import de l'arodoise "+refresh);
+
+
+            })
+
+
+
+        }
     }
-
-
 });

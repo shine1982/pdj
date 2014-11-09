@@ -1,0 +1,23 @@
+
+
+<script type="text/template" id="ardoise-import-visu-template">
+<div class="modal-sm ardoiseVisu">
+<p class="visuTitleMenu text-center">{{=it.titleArdoise}}</p>
+{{~it.formulePriceList :value:index}}
+<p>{{=value.get("label")}} {{=value.get("priceEuro")}} €</p>
+{{~}}
+{{~it.dishesBlocList :value:index}}
+<div class="{{=value.id}}">
+    <h5 class="visuDishesBlocTitle">{{=value.get("label")}}
+        <div class="pull-right">
+            {{=value.get("priceEuro")!=""?(value.get("priceEuro")+' €'):''}}
+        </div>
+    </h5>
+</div>
+{{~}}
+
+{{~it.textList :value:index}}
+<p>{{=value.get("label")}}</p>
+{{~}}
+</div>
+</script>

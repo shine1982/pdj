@@ -180,6 +180,18 @@ td.editing .priceedit{
     color: white;
 }
 
+.ardoiseVisu{
+    font-family: "Comic Sans", "Comic Sans MS", cursive;
+    text-align: left;
+    border-style: groove;
+    border-color:#FFCC00;
+    border-width:10px;
+    background-color: #000000;
+    color: white;
+    margin: 0 auto;
+    padding:5px;
+}
+
 .visuTitleMenu{
     text-decoration: underline;
 }
