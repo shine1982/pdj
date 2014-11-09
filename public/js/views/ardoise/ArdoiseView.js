@@ -303,7 +303,7 @@ app.ArdoiseView = Parse.View.extend({
         var ardoise = ardoises[app.resto.importVisuArdoiseIndex];
         var datejs = ardoise.get("date");
         var dateToShow = moment(datejs).format("DD/MM/YYYY");
-        $("#tobeImportedArdoiseDate").datepicker('setValue', dateToShow);
+        $("#tobeImportedArdoiseDate").val(dateToShow);
         self.tempFormulePriceList = new app.ArdoiseFormulePriceList();
         self.tempDishesBlocList = new app.ArdoiseDishesBlocList();
         self.tempDishList = new app.ArdoiseDishList();
