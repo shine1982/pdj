@@ -27,6 +27,9 @@ function ArdoiseDishesBlocHelper(context){
                     return Parse.Promise.when(promises);
 
                 }).then(function() {
+                    for(var i=0; i<app.resto.ardoiseOfDate.dishesBlocList.length;i++){
+                        app.resto.ardoiseOfDate.dishesBlocList.at(i).trigger("change");
+                    }
                     callback();
                 });
             }else{
