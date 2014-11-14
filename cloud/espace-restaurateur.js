@@ -38,7 +38,7 @@ module.exports = function(){
             },
             error:function(error){
                 console.log("no restaurant trouvé pour restaurater "+restaurateur.username);
-                res.render("espace-restaurateur/espace-restaurateur", {resto:resto,});
+                res.render("espace-restaurateur/espace-restaurateur", {resto:resto,role:restaurateur.get("userGroup")});
             }
         });
     });
@@ -126,7 +126,7 @@ module.exports = function(){
             owner:Parse.User.current()
         },{
             success:function(resto){
-                res.redirect("/r/espace-restaurateur#edit/"+resto.id+"/todaydish");
+                res.redirect("/r/espace-restaurateur#edit/ardoise");
             },
             error:function(resto,error){
                 res.redirect("/r/espace-restaurateur");
