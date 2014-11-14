@@ -34,11 +34,11 @@ module.exports = function(){
         query.find({
             success:function(restaurants){
                 resto = restaurants[0];
-                res.render("espace-restaurateur/espace-restaurateur", {resto:resto});
+                res.render("espace-restaurateur/espace-restaurateur", {resto:resto, role:restaurateur.get("userGroup")});
             },
             error:function(error){
                 console.log("no restaurant trouvé pour restaurater "+restaurateur.username);
-                res.render("espace-restaurateur/espace-restaurateur", {resto:resto});
+                res.render("espace-restaurateur/espace-restaurateur", {resto:resto,});
             }
         });
     });

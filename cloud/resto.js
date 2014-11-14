@@ -11,7 +11,7 @@ module.exports = function(){
     app.locals._ = require('underscore');
 
     app.get('/a/restos', requireUser, function(req, res) {
-        res.render('resto/restaurants');
+        res.render('resto/restaurants', {role:Parse.User.current().get("userGroup")});
     });
 
     return app;
