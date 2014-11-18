@@ -199,3 +199,8 @@ td.editing .priceedit{
 h5.visuDishesBlocTitle{
     text-decoration: underline;
 }
+label.modifiable{
+    background-color:#F1F1F1;
+    border-bottom:1px dashed #000000;
+    cursor: pointer;
+}

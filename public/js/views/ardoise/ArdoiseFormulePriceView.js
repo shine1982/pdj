@@ -18,12 +18,12 @@ app.ArdoiseFormulePriceView = Parse.View.extend({
 
     initialize: function() {
         _.bindAll(this,"render","removeItem");
-        this.model.toBeRemoved = false;
         this.model.bind('change', this.render);
     },
 
-    removeItem:function(item){
-        this.model.toBeRemoved = true;
+    removeItem:function(e){
+        app.parseRelationHelper.deleteItemFromRelation(app.resto.ardoiseOfDate,
+        app.constants.RELATION_FORMULE_PRICE_LIST, app.resto.ardoiseOfDate.formulePriceList,this.model);
         this.remove();
     },
     setPrice:function(e){

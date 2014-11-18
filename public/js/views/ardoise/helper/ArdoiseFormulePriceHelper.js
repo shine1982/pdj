@@ -13,7 +13,6 @@ function ArdoiseFormulePriceHelper(context){
                 var labelArrays = ["plat","entree + plat ou plat + dessert", "entree + plat + dessert"];
 
                 Parse.Promise.as().then(function() {
-
                     var promises = [];
                     var order=1;
                     _.each(labelArrays, function(label) {
@@ -37,7 +36,6 @@ function ArdoiseFormulePriceHelper(context){
 
         })
     };
-
     this.initFormulePriceListFromRelation=function(){
 
         var relationFPL = app.resto.ardoiseOfDate.relation("formulePriceList");
@@ -47,37 +45,30 @@ function ArdoiseFormulePriceHelper(context){
             }
         })
     }
-    this.newFormulePrice=function(label, price, order, callback){
-        this.searchFormulePrice(label,
-            function(afp){
-                callback(afp);
-            },
-            function(){
-                var afp = new app.ArdoiseFormulePrice();
-                afp.set("label",label);
-                if(price){
-                    afp.set("priceEuro",price);
-                }
-                afp.set("resto",app.resto);
-                afp.set("order",order);
-                afp.save().then(
-                    function(afp){
-                        callback(afp);
-                    }
-                )
-            }
-        );
-    };
+
     this.addNewFormulePrice=function(e){
         e.preventDefault();
         var label = this.ctx.$(".addFormulePriceLabelInput").val();
+        var price = this.ctx.$(".addFormulePriceEuroInput").val();
         var that = this;
         if(label!==''){
-            this.newFormulePrice(label,that.ctx.$(".addFormulePriceEuroInput").val(),app.resto.ardoiseOfDate.formulePriceList.getNextOrder(), function(afp){
-                app.resto.ardoiseOfDate.formulePriceList.add(afp);
-                that.ctx.$(".addFormulePriceLabelInput").val('');
-                that.ctx.$(".addFormulePriceEuroInput").val('');
-            });
+           app.parseRelationHelper.addToList(
+               app.resto.ardoiseOfDate,
+               app.constants.RELATION_FORMULE_PRICE_LIST,
+               label,
+               price,
+               app.ArdoiseFormulePrice,
+               app.resto.ardoiseOfDate.formulePriceList,
+               function(item){
+                   that.ctx.$(".addFormulePriceLabelInput").val('');
+                   that.ctx.$(".addFormulePriceEuroInput").val('');
+               },
+               function(errNo){
+                   if(errNo ===1){
+                       alert("'"+label+"' déjà dans la liste!");
+                   }
+               }
+           );
         }else{
             alert("vous devez au moins saisir le nom de formule!");
         }
@@ -93,19 +84,6 @@ function ArdoiseFormulePriceHelper(context){
     this.addFormulePrice=function(ardoiseFormulePrice){
         var ardoiseFormulePriceView = new app.ArdoiseFormulePriceView({model:ardoiseFormulePrice});
         $("#zoneFormulePrice .showAddFormulePrice").before(ardoiseFormulePriceView.render().el);
-    };
-    this.searchFormulePrice=function(label,success,notsuccess){
-
-        var query =  new Parse.Query(app.ArdoiseFormulePrice);
-        query.equalTo("resto", app.resto);
-        query.equalTo("label",label);
-        query.find().then(function(results){
-            if(results.length>0){
-                success(results[0]);
-            }else{
-                notsuccess();
-            }
-        })
     };
 
 

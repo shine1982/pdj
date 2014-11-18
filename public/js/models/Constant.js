@@ -23,3 +23,8 @@ app.weekRef["vendredi"]=5;
 app.weekRef["samedi"]=6;
 app.weekRef["dimanche"]=7;
 
+app.constants.RELATION_FORMULE_PRICE_LIST="formulePriceList";
+app.constants.RELATION_DISHES_BLOC_LIST="dishesBlocList";
+app.constants.RELATION_DISH_LIST="dishList";
+app.constants.RELATION_TEXT_LIST="textList";
+

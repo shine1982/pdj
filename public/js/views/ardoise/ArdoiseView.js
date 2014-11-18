@@ -10,8 +10,8 @@ app.ArdoiseView = Parse.View.extend({
 
     events: {
         //ardoise
-        "click #saveArdoiseBtn":'saveArdoise',
         "click .btnCreateArdoise":'createNewArdoise',
+        "blur #ardoiseTitle":'saveArdoiseTitle',
 
         //import ardoise
         "click #btnImportArdoise":'showImportArdoiseModal',
@@ -34,7 +34,7 @@ app.ArdoiseView = Parse.View.extend({
     },
 
     initialize: function() {
-        _.bindAll(this,"saveArdoise","createNewArdoise","searchArdoise","updateLists","saveArdoiseToBase","saveArdoiseWithLists",
+        _.bindAll(this, "createNewArdoise","searchArdoise","updateLists","saveArdoiseToBase","saveArdoiseWithLists",
             "addNewFormulePrice","showAddNewFormulePrice","hideAddNewFormulePrice","addFormulePrice",
             "addNewDishesBloc","showAddNewDishesBloc","hideAddNewDishesBloc","addDishesBloc",
             "addDish",
@@ -198,9 +198,11 @@ app.ArdoiseView = Parse.View.extend({
     },
 
 
-    saveArdoise:function(e){
+    saveArdoiseTitle:function(e){
         e.preventDefault();
-        this.saveArdoiseToBase("L'ardoise a été sauvegardé pour la date "+ $('#ardoiseDatepicker').val());
+        app.resto.ardoiseOfDate.set("title", $("#ardoiseTitle").val());
+        app.resto.ardoiseOfDate.save();
+        //this.saveArdoiseToBase("L'ardoise a été sauvegardé pour la date "+ $('#ardoiseDatepicker').val());
 
     },
 
