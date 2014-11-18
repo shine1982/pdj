@@ -7,11 +7,14 @@ app.ArdoisePanelView = Parse.View.extend({
     template: _.template($('#ardoise-panel-template').html()),
 
     events: {
-        "click #visuArdoiseBtn":"showArdoiseVisuModal"
+        "click #visuArdoiseBtn":"showArdoiseVisuModal",
+        "click #ardoiseDatePickerIcon":"clickDatePickerIcon"
     },
-
+    clickDatePickerIcon:function(e){
+      $("#ardoiseDatepicker").trigger("focus");
+    },
     initialize: function(id) {
-        _.bindAll(this,"showArdoiseVisuModal");
+        _.bindAll(this,"showArdoiseVisuModal","clickDatePickerIcon");
         this.render();
         this.init3rdBootstrapComponent();
         this.on("dateArdoiseChange", this.ardoiseDateChange);
