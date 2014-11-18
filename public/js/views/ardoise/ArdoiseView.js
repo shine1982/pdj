@@ -68,6 +68,15 @@ app.ArdoiseView = Parse.View.extend({
 
     render: function() {
         this.$el.html( this.template(this.options));
+
+        //petit controle sur un element parent:
+        if(this.options.modify){
+            $("#visuArdoiseBtn").show();
+        }else{
+            $("#visuArdoiseBtn").hide();
+        }
+        //et pour tooltip
+        $('[data-toggle="tooltip"]').tooltip();
         return this;
     },
 
