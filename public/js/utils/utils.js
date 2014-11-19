@@ -1,12 +1,11 @@
 var msgLevelConstants=["success","info","warning","danger"];
 function showMsg(level, msg){
-    $("#msgPanel").hide();
     $("#msgPanel").html(_.template($("#msg-template").html())({level:msgLevelConstants[level], msg:msg}));
     $('html, body').animate(
         {scrollTop: 0},
         'fast',
         function(){
-            $("#msgPanel").show();
+            $("#msgPanel").show().delay(5000).fadeOut();
         }
     );
 }
