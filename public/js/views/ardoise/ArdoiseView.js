@@ -335,14 +335,14 @@ app.ArdoiseView = Parse.View.extend({
                 app.resto.ardoiseOfDate = ardoise;
                 $("#importArdoiseModal").modal("hide");
                 self.options.modify=true;
-                app.resto.ardoiseOfDate.formulePriceList = self.tempFormulePriceList;
-                app.resto.ardoiseOfDate.dishesBlocList = self.tempDishesBlocList;
-                app.resto.ardoiseOfDate.dishList = self.tempDishList;
-                app.resto.ardoiseOfDate.textList = self.tempTextList;
-
-                var refresh="<button onclick='location.reload()'>Rafraichir</button>"
-                self.saveArdoiseToBase("L'ardoise a été créé avec l'import de l'arodoise "+refresh);
-
+                app.parseRelationHelper.saveRelationFromList(ardoise,self.tempFormulePriceList,app.constants.RELATION_FORMULE_PRICE_LIST);
+                app.parseRelationHelper.saveRelationFromList(ardoise,self.tempDishesBlocList,app.constants.RELATION_DISHES_BLOC_LIST);
+                app.parseRelationHelper.saveRelationFromList(ardoise,self.tempDishList,app.constants.RELATION_DISH_LIST);
+                app.parseRelationHelper.saveRelationFromList(ardoise,self.tempTextList,app.constants.RELATION_TEXT_LIST);
+                ardoise.save().then(function(){
+                    self.parentView.trigger("dateArdoiseChange");
+                    showMsg(0,"L'ardoise a été importé!");
+                })
             })
         }
     }

@@ -117,3 +117,10 @@ app.parseRelationHelper.synchroniseDishList=function(){//synchroniser la dishLis
     })
 
 }
+
+app.parseRelationHelper.saveRelationFromList=function(objParent, list, nomOfRelation){
+    var relation = objParent.relation(nomOfRelation);
+    list.forEach (function (model) {
+        relation.add(model);
+    });
+}

@@ -40,12 +40,14 @@ app.ArdoisePanelView = Parse.View.extend({
                         that.ardoiseView.undelegateEvents();
                     }
                     that.ardoiseView = new app.ArdoiseView({el:"#ardoise", ardoise: app.resto.ardoiseOfDate,modify: modify,alreadyCreatedArdoise: alreadyCreatedArdoise});
+                    that.ardoiseView.parentView=that;
                 });
             }else{
                 if(that.ardoiseView){
                     that.ardoiseView.undelegateEvents();
                 }
                 that.ardoiseView = new app.ArdoiseView({el:"#ardoise", ardoise: app.resto.ardoiseOfDate,modify: modify,alreadyCreatedArdoise: true});
+                that.ardoiseView.parentView=that;
             }
         });
     },
