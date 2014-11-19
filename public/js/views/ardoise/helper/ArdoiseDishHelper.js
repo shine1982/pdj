@@ -7,6 +7,7 @@ function ArdoiseDishHelper(context){
     this.addNewDish=function(e, dishesBloc){
         e.preventDefault();
         var label = this.ctx.$(".addDishLabelInput").val();
+        var price = this.ctx.$(".addDishPriceInput").val();
         var that = this;
         if(label!==''){
 
@@ -14,11 +15,12 @@ function ArdoiseDishHelper(context){
                 app.resto.ardoiseOfDate,
                 app.constants.RELATION_DISH_LIST,
                 label,
-                0,
+                price,
                 app.ArdoiseDish,
                 dishesBloc.dishList,
                 function(item){
                     that.ctx.$(".addDishLabelInput").val('');
+                    that.ctx.$(".addDishPriceInput").val('');
                 },
                 function(errNo){
                     if(errNo ===1){

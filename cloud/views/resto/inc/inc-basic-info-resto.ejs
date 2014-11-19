@@ -20,6 +20,10 @@
     <input type="tel" class="form-control" name="telephone" pattern="\d*" value="{{=resto? resto.get('telephone'):'01'}}">
 </div>
 <div class="form-group">
+    <label for="website">Site internet</label>
+    <input type="text" class="form-control" name="website"  value="{{=resto? resto.get('website'):''}}">
+</div>
+<div class="form-group">
     <label>Horaires d'ouverture</label>
     <ul class="list-group">
         <div class="panel panel-default">
