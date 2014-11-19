@@ -3,40 +3,30 @@ function ArdoiseDishHelper(context){
     this.ctx = context;
 
 
-    this.newDish=function(label,price,idDishesBloc,callback){
-        var self = this;
-        this.searchDish(label,
-            function(df){
-                callback(df);
-            },
-            function(){
-                var ad = new app.ArdoiseDish();
-                ad.set("label",label);
-                if(price){
-                    ad.set("priceEuro",price);
-                }
-                ad.set("resto",app.resto);
-                ad.set("order",app.resto.ardoiseOfDate.dishList.getNextOrder());
-                ad.set("idDishesBloc",idDishesBloc);
-                ad.save().then(
-                    function(ad){
-                        callback(ad);
-                    }
-                )
-            }
-        );
-    };
-    this.addNewDish=function(e, idDishesBloc){
+
+    this.addNewDish=function(e, dishesBloc){
         e.preventDefault();
         var label = this.ctx.$(".addDishLabelInput").val();
         var that = this;
         if(label!==''){
-            that.newDish(label, '',idDishesBloc,
-                function(df){
-                    app.resto.ardoiseOfDate.dishList.add(df);
+
+            app.parseRelationHelper.addToList(
+                app.resto.ardoiseOfDate,
+                app.constants.RELATION_DISH_LIST,
+                label,
+                0,
+                app.ArdoiseDish,
+                dishesBloc.dishList,
+                function(item){
                     that.ctx.$(".addDishLabelInput").val('');
-                    that.ctx.$(".addDishPriceInput").val('');
-            });
+                },
+                function(errNo){
+                    if(errNo ===1){
+                        alert("'"+label+"' déjà dans la liste!");
+                    }
+                },
+                dishesBloc.id
+            );
         }else{
             alert("vous devez saisir le nom du plat.");
         }
@@ -48,18 +38,5 @@ function ArdoiseDishHelper(context){
     this.hideAddNewDish=function(e){
         e.preventDefault();
         this.ctx.$("."+this.ctx.model.id+" .showAddDish").removeClass("editing");
-    };
-    this.searchDish=function(label,success,notsuccess){
-
-        var query =  new Parse.Query(app.ArdoiseDish);
-        query.equalTo("resto", app.resto);
-        query.equalTo("label",label);
-        query.find().then(function(results){
-            if(results.length>0){
-                success(results[0]);
-            }else{
-                notsuccess();
-            }
-        })
     };
 }

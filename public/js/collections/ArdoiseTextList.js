@@ -12,11 +12,5 @@ app.ArdoiseTextList = Parse.Collection.extend({
     },
     comparator: function (model) {
         return model.get('order');
-    },
-    notToBeRemovedList:function(){
-        return this.filter(function(text){
-            return !text.toBeRemoved;
-        });
     }
-
 });

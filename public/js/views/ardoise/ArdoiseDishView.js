@@ -17,12 +17,12 @@ app.ArdoiseDishView = Parse.View.extend({
 
     initialize: function() {
         _.bindAll(this,"render","removeItem");
-        this.model.toBeRemoved = false;
         this.model.bind('change', this.render);
     },
 
-    removeItem:function(item){
-        this.model.toBeRemoved = true;
+    removeItem:function(){
+        app.parseRelationHelper.deleteItemFromRelation(app.resto.ardoiseOfDate,
+            app.constants.RELATION_DISH_LIST, this.parentView.model.dishList,this.model);
         this.remove();
     },
     setPrice:function(e){

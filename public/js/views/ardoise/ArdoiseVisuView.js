@@ -15,17 +15,19 @@ app.ArdoiseVisuView = Parse.View.extend({
     },
 
     render: function() {
+        app.parseRelationHelper.synchroniseDishList();
+
         this.$el.html( this.template({
             titleArdoise:app.resto.ardoiseOfDate.get("title"),
             formulePriceList:app.resto.ardoiseOfDate.formulePriceList.withPriceList(),
             dishesBlocList: app.resto.ardoiseOfDate.dishesBlocList.hasDishesList(app.resto.ardoiseOfDate.dishList),
-            textList:app.resto.ardoiseOfDate.textList.notToBeRemovedList()
+            textList:app.resto.ardoiseOfDate.textList.toArray()
         }));
         return this;
     },
 
     renderDishes: function(){
-        var dlist = app.resto.ardoiseOfDate.dishList.notToBeRemovedList();
+        var dlist = app.resto.ardoiseOfDate.dishList.toArray();
         for(var i=0; i<dlist.length; i++){
             var dish = dlist[i];
             var priceToShow="";

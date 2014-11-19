@@ -16,12 +16,12 @@ app.ArdoiseTextView = Parse.View.extend({
 
     initialize: function() {
         _.bindAll(this,"render","removeItem");
-        this.model.toBeRemoved = false;
         this.model.bind('change', this.render);
     },
 
     removeItem:function(item){
-        this.model.toBeRemoved = true;
+        app.parseRelationHelper.deleteItemFromRelation(app.resto.ardoiseOfDate,
+            app.constants.RELATION_TEXT_LIST, app.resto.ardoiseOfDate.textList,this.model);
         this.remove();
     },
 

@@ -16,7 +16,7 @@ app.ArdoiseFormulePriceList = Parse.Collection.extend({
 
     withPriceList:function(){
         return this.filter(function(formulePrice){
-           return formulePrice.get("priceEuro")!="" && !formulePrice.toBeRemoved;
+           return formulePrice.get("priceEuro")!="";
         });
     }
 

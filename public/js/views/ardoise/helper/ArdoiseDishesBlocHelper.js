@@ -27,9 +27,6 @@ function ArdoiseDishesBlocHelper(context){
                     return Parse.Promise.when(promises);
 
                 }).then(function() {
-                    for(var i=0; i<app.resto.ardoiseOfDate.dishesBlocList.length;i++){
-                        app.resto.ardoiseOfDate.dishesBlocList.at(i).trigger("change");
-                    }
                     callback();
                 });
             }else{
@@ -39,37 +36,28 @@ function ArdoiseDishesBlocHelper(context){
 
         })
     };
-    this.newDishesBloc=function(label,price,order,callback){
-        this.searchDishesBloc(label,
-            function(df){
-                callback(df);
-            },
-            function(){
-                var df = new app.ArdoiseDishesBloc();
-                df.set("label",label);
-                if(price){
-                    df.set("priceEuro",price);
-                }
-                df.set("resto",app.resto);
-                df.set("order",order);
-                df.save().then(
-                    function(df){
-                        callback(df);
-                    }
-                )
-            }
-        );
-    };
+
     this.addNewDishesBloc=function(e){
         e.preventDefault();
         var label = this.ctx.$(".addDishesBlocLabelInput").val();
         var that = this;
         if(label!==''){
-            that.newDishesBloc(label,that.ctx.$(".addDishesBlocPriceEuroInput").val(),app.resto.ardoiseOfDate.dishesBlocList.getNextOrder(),function(df){
-                app.resto.ardoiseOfDate.dishesBlocList.add(df);
-                that.ctx.$(".addDishesBlocLabelInput").val('');
-                that.ctx.$(".addDishesBlocPriceEuroInput").val('');
-            });
+            app.parseRelationHelper.addToList(
+                app.resto.ardoiseOfDate,
+                app.constants.RELATION_DISHES_BLOC_LIST,
+                label,
+                0,
+                app.ArdoiseDishesBloc,
+                app.resto.ardoiseOfDate.dishesBlocList,
+                function(item){
+                    that.ctx.$(".addDishesBlocLabelInput").val('');
+                },
+                function(errNo){
+                    if(errNo ===1){
+                        alert("'"+label+"' déjà dans la liste!");
+                    }
+                }
+            );
         }else{
             alert("vous devez saisir le nom du bloc!");
         }
@@ -85,18 +73,5 @@ function ArdoiseDishesBlocHelper(context){
     this.addDishesBloc=function(ardoiseDishesBloc){
         var ardoiseDishesBlocView = new app.ArdoiseDishesBlocView({model:ardoiseDishesBloc});
         $("#zoneDishesBlocs .showAddDishesBlocBtn").before(ardoiseDishesBlocView.render().el);
-    };
-    this.searchDishesBloc=function(label,success,notsuccess){
-
-        var query =  new Parse.Query(app.ArdoiseDishesBloc);
-        query.equalTo("resto", app.resto);
-        query.equalTo("label",label);
-        query.find().then(function(results){
-            if(results.length>0){
-                success(results[0]);
-            }else{
-                notsuccess();
-            }
-        })
     };
 }
