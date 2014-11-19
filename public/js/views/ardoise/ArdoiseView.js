@@ -38,9 +38,11 @@ app.ArdoiseView = Parse.View.extend({
             "addNewFormulePrice","showAddNewFormulePrice","hideAddNewFormulePrice","addFormulePrice",
             "addNewDishesBloc","showAddNewDishesBloc","hideAddNewDishesBloc","addDishesBloc",
             "addText",
-        "showImportArdoiseModal","renderImportArodoise","previousArdoise","nextArdoise","importArdoise");
+        "showImportArdoiseModal","renderImportArodoise","previousArdoise","nextArdoise","importArdoise","initAutoComplete");
 
         this.render();
+        //TODO: to debug the autoComplete module by myself
+        //this.initAutoComplete();
 
         this.formulePricehelper = new ArdoiseFormulePriceHelper(this);
         this.dishesBlochelper = new ArdoiseDishesBlocHelper(this);
@@ -54,6 +56,7 @@ app.ArdoiseView = Parse.View.extend({
         app.resto.ardoiseOfDate.dishesBlocList.on('add',this.addDishesBloc);
         app.resto.ardoiseOfDate.textList.on('add',this.addText);
         this.initLists();
+
     },
 
     initLists:function(){
@@ -62,6 +65,20 @@ app.ArdoiseView = Parse.View.extend({
             this.initDishListFromRelation();//y compris dishesBloc
             this.initTextListFromRelation();
         }
+    },
+
+    initAutoComplete:function(){
+
+        new AutoCompleteView({
+            input: $("#ardoiseTextInput"),
+            model: app.ArdoiseText,  //you only need the class here to init
+            queryParameter: "label",  //the field to query
+            onSelect: function (model) {
+                alert("hello");
+                //$("#selected").show().find("p").html(model.label());
+            },
+            highlight: "classname"	// optional, wrap keyword in <b class="classname"></b>
+        }).render();
     },
 
     render: function() {

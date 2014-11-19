@@ -7,6 +7,8 @@ app.ArdoiseText = Parse.Object.extend({
     defaults: {
         label: '',
         order: 1
+    },
+    label: function () {
+        return this.get("label");
     }
-
 });
