@@ -114,6 +114,7 @@ module.exports = function(){
             postalCode:form.postalCode,
             city:form.city,
             telephone:form.telephone,
+            website:form.website,
             opentimeNoonStartHour:form.opentimeNoonStartHour,
             opentimeNoonStartMin:form.opentimeNoonStartMin,
             opentimeNoonEndHour:form.opentimeNoonEndHour,
