@@ -4,13 +4,16 @@ function ArdoiseTextHelper(context){
 
 
     this.initTextListFromRelation=function(){
-
+        /*
         var relation = app.resto.ardoiseOfDate.relation("textList");
         relation.query().ascending("order").find({
             success:function(textList){
                 app.resto.ardoiseOfDate.textList.add(textList);
             }
-        })
+        })*/
+        app.parseRelationHelper.initListFromRelation(app.resto.ardoiseOfDate.textList,
+        app.resto.ardoiseOfDate,
+        app.constants.RELATION_TEXT_LIST);
     };
     this.addNewText=function(e){
         e.preventDefault();

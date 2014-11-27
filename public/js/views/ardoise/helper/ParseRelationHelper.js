@@ -58,6 +58,7 @@ app.parseRelationHelper.addToList = function ( //cette méthode est pour ajouter
     }
  }
 app.parseRelationHelper.updateRelationFromList=function(objParent, relationName, collectionModel,idDishesBloc){
+    /*
     var relation = objParent.relation(relationName);
     var query  = relation.query();
     if(idDishesBloc){//une ligne spécifique pour gestion de plat
@@ -76,10 +77,23 @@ app.parseRelationHelper.updateRelationFromList=function(objParent, relationName,
         error:function(err){
             alert("Erreur de sauvegarde. Détail: "+err.message);
         }
-    })
+    })*/
+
+    if(idDishesBloc){
+        var originalDishes = objParent.get(relationName);
+        var filteredDishes = _.filter(originalDishes, function(dish){
+          return dish.get("idDishesBloc") !== idDishesBloc;
+        });
+        objParent.set(relationName, _.union(filteredDishes, collectionModel.toArray()));
+    }else{
+        objParent.set(relationName,collectionModel.toArray());
+    }
+
+    objParent.save();
 }
 
 app.parseRelationHelper.deleteItemFromRelation=function(objParent, relationName, collectionModel, item, idDishesBloc){
+    /*
     var relation = objParent.relation(relationName);
     var query = relation.query();
     if(idDishesBloc){//une ligne spécifique pour gestion de plat
@@ -96,19 +110,20 @@ app.parseRelationHelper.deleteItemFromRelation=function(objParent, relationName,
         error:function(err){
             alert("Erreur de delete. Détail: "+err.message);
         }
-    })
-}
+    })*/
 
-app.parseRelationHelper.setListFromRelation=function(objParent, relationName, collectionModel){
-    var relation = objParent.relation(relationName);
-    relation.query().ascending("order").find({
-        success:function(results){
-            collectionModel.add(results);
-        },
-        error:function(err){
-            alert("Erreur de chargement de liste. Détail: "+err.message);
+    collectionModel.remove(item);
+
+    var deletedResult = _.reject(objParent.get(relationName),function(model){
+        var result = (model.id===item.id);
+        if(idDishesBloc){
+            result = result&&(idDishesBloc==model.get("idDishesBloc"));
         }
+        return result;
     })
+    objParent.set(relationName,deletedResult);
+    objParent.save();
+
 }
 app.parseRelationHelper.synchroniseDishList=function(){//synchroniser la dishList de ardoise avec celles de dishesBloc
     app.resto.ardoiseOfDate.dishList.reset();
@@ -119,8 +134,25 @@ app.parseRelationHelper.synchroniseDishList=function(){//synchroniser la dishLis
 }
 
 app.parseRelationHelper.saveRelationFromList=function(objParent, list, nomOfRelation){
+    /*
     var relation = objParent.relation(nomOfRelation);
     list.forEach (function (model) {
         relation.add(model);
-    });
+    });*/
+    objParent.set(nomOfRelation,list.toArray());
+}
+
+app.parseRelationHelper.initListFromRelation=function(list, objParent, relationName){
+    /*
+     var relation = app.resto.ardoiseOfDate.relation("textList");
+     relation.query().ascending("order").find({
+     success:function(textList){
+     app.resto.ardoiseOfDate.textList.add(textList);
+     }
+     })*/
+    var array = objParent.get(relationName);
+    if(array){
+        list.add(array);
+    }
+
 }

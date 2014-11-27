@@ -30,6 +30,10 @@ app.ArdoisePanelView = Parse.View.extend({
             if(!modify){//s'il s'agit de la création. Si oui, alors vérifié si une ardoise a déjà été créer pour ce resto
                 var queryArdoise = new Parse.Query(app.Ardoise);
                 queryArdoise.equalTo("resto", app.resto);
+                queryArdoise.include(app.constants.RELATION_FORMULE_PRICE_LIST);
+                queryArdoise.include(app.constants.RELATION_DISHES_BLOC_LIST);
+                queryArdoise.include(app.constants.RELATION_DISH_LIST);
+                queryArdoise.include(app.constants.RELATION_TEXT_LIST);
                 queryArdoise.limit(1);
                 queryArdoise.find().then(function(results){
                     var alreadyCreatedArdoise = false;
@@ -61,6 +65,10 @@ app.ArdoisePanelView = Parse.View.extend({
             var queryArdoise = new Parse.Query(app.Ardoise);
             queryArdoise.equalTo("resto", app.resto);
             queryArdoise.equalTo("date",jsDateSelected);
+            queryArdoise.include(app.constants.RELATION_FORMULE_PRICE_LIST);
+            queryArdoise.include(app.constants.RELATION_DISHES_BLOC_LIST);
+            queryArdoise.include(app.constants.RELATION_DISH_LIST);
+            queryArdoise.include(app.constants.RELATION_TEXT_LIST);
             queryArdoise.find().then(
                 function(ardoises){
                     if(ardoises.length>0){

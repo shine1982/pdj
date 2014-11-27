@@ -37,13 +37,16 @@ function ArdoiseFormulePriceHelper(context){
         })
     };
     this.initFormulePriceListFromRelation=function(){
-
+/*
         var relationFPL = app.resto.ardoiseOfDate.relation("formulePriceList");
         relationFPL.query().ascending("order").find({
             success:function(formulePriceList){
                 app.resto.ardoiseOfDate.formulePriceList.add(formulePriceList);
             }
-        })
+        })*/
+        app.parseRelationHelper.initListFromRelation(app.resto.ardoiseOfDate.formulePriceList,
+            app.resto.ardoiseOfDate,
+            app.constants.RELATION_FORMULE_PRICE_LIST);
     }
 
     this.addNewFormulePrice=function(e){

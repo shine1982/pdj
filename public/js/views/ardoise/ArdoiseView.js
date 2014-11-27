@@ -34,7 +34,7 @@ app.ArdoiseView = Parse.View.extend({
     },
 
     initialize: function() {
-        _.bindAll(this, "createNewArdoise","searchArdoise","updateLists","saveArdoiseToBase",
+        _.bindAll(this, "createNewArdoise","searchArdoise","saveArdoiseToBase",
             "addNewFormulePrice","showAddNewFormulePrice","hideAddNewFormulePrice","addFormulePrice",
             "addNewDishesBloc","showAddNewDishesBloc","hideAddNewDishesBloc","addDishesBloc",
             "addText",
@@ -136,6 +136,7 @@ app.ArdoiseView = Parse.View.extend({
 
     /* Zone dish */
     initDishListFromRelation:function(){
+        /*
         var relationDL = app.resto.ardoiseOfDate.relation(app.constants.RELATION_DISH_LIST);
         relationDL.query().ascending("order").find({
             success:function(dishList){
@@ -147,7 +148,15 @@ app.ArdoiseView = Parse.View.extend({
             relationDBL.query().ascending("order").find().then(function(results){
                 app.resto.ardoiseOfDate.dishesBlocList.add(results);
             })
-        })
+        })*/
+
+        app.parseRelationHelper.initListFromRelation(app.resto.ardoiseOfDate.dishList,
+            app.resto.ardoiseOfDate,
+            app.constants.RELATION_DISH_LIST);
+
+        app.parseRelationHelper.initListFromRelation(app.resto.ardoiseOfDate.dishesBlocList,
+            app.resto.ardoiseOfDate,
+            app.constants.RELATION_DISHES_BLOC_LIST);
 
     },
 
@@ -230,26 +239,12 @@ app.ArdoiseView = Parse.View.extend({
         ardoise.set("resto",app.resto);
         ardoise.set("date",datejsForArdoise);
         ardoise.set("title",ardoiseTitle);
-
-        this.updateLists(msgToShow);
-    },
-
-    updateLists:function( msgToShow)
-    {
-
-        var self=this;
-        var relationFPL = app.resto.ardoiseOfDate.relation("formulePriceList");
-        var relationDBL = app.resto.ardoiseOfDate.relation("dishesBlocList");
-
-        app.resto.ardoiseOfDate.formulePriceList.forEach (function (model) {
-            relationFPL.add(model);
-        });
-        app.resto.ardoiseOfDate.dishesBlocList.forEach (function (model) {
-            relationDBL.add(model);
-        });
-        app.resto.ardoiseOfDate.save().then(function(){
+        ardoise.set(app.constants.RELATION_FORMULE_PRICE_LIST,app.resto.ardoiseOfDate.formulePriceList.toArray());
+        ardoise.set(app.constants.RELATION_DISHES_BLOC_LIST,app.resto.ardoiseOfDate.dishesBlocList.toArray());
+        ardoise.save().then(function(){
             showMsg(0,msgToShow);
         })
+
 
     },
 
@@ -262,6 +257,10 @@ app.ArdoiseView = Parse.View.extend({
         var queryArdoise = new Parse.Query(app.Ardoise);
         queryArdoise.descending("date");
         queryArdoise.equalTo("resto",app.resto);
+        queryArdoise.include(app.constants.RELATION_FORMULE_PRICE_LIST);
+        queryArdoise.include(app.constants.RELATION_DISHES_BLOC_LIST);
+        queryArdoise.include(app.constants.RELATION_DISH_LIST);
+        queryArdoise.include(app.constants.RELATION_TEXT_LIST);
         queryArdoise.limit(20);
         queryArdoise.find().then(function(ardoises){
             if(ardoises.length>0){
@@ -285,6 +284,30 @@ app.ArdoiseView = Parse.View.extend({
         self.tempDishesBlocList = new app.ArdoiseDishesBlocList();
         self.tempDishList = new app.ArdoiseDishList();
         self.tempTextList = new app.ArdoiseTextList();
+
+        self.tempFormulePriceList.add(ardoise.get(app.constants.RELATION_FORMULE_PRICE_LIST));
+        self.tempDishesBlocList.add(ardoise.get(app.constants.RELATION_DISHES_BLOC_LIST));
+        self.tempTextList.add(ardoise.get(app.constants.RELATION_TEXT_LIST));
+        self.tempDishList.add(ardoise.get(app.constants.RELATION_DISH_LIST));
+
+        $("#showImportArdoise").html(
+            self.importVisuTempl(
+                {titleArdoise:ardoise.get("title"),
+                    formulePriceList:self.tempFormulePriceList.withPriceList(),
+                    dishesBlocList: self.tempDishesBlocList.hasDishesList(self.tempDishList),
+                    textList:self.tempTextList.toArray()})
+        );
+
+        for(var i=0; i<self.tempDishList.toArray().length; i++){
+            var dish = self.tempDishList.toArray()[i];
+            var priceToShow="";
+            if(dish.get("priceEuro")!=""){
+                priceToShow = "  " + dish.get('priceEuro')+" €";
+            }
+            $(".ardoiseVisu ."+dish.get("idDishesBloc")).append("<p>"+dish.get("label")+priceToShow+"</p>");
+        }
+
+        /*
         ardoise.relation("formulePriceList").query().find().then(
             function(results){
                 self.tempFormulePriceList.add(results);
@@ -315,7 +338,7 @@ app.ArdoiseView = Parse.View.extend({
                     }
                     $(".ardoiseVisu ."+dish.get("idDishesBloc")).append("<p>"+dish.get("label")+priceToShow+"</p>");
                 }
-         })
+         })*/
         //les deux buttons < >
         $("#btnNextArdoise").show();
         $("#btnPreviousArdoise").show();
